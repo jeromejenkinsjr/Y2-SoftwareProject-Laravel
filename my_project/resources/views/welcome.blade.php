@@ -22,19 +22,26 @@
         .header {
             position: relative;
             width: 100%;
-            height: 400px; /* Adjust height as needed */
+            height: 600px; /* Adjust height as needed */
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
             color: white;
-            font-size: 2rem;
-            font-weight: bold;
             background: linear-gradient(45deg, #FCA714, #FF8C00, #FF1493);
             background-size: 200% 200%;
             animation: gradientAnimation 8s infinite alternate ease-in-out;
             overflow: hidden;
         }
+
+        .header-bg-image {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
 
         /* Wave Effect */
         .header::after {
@@ -156,9 +163,25 @@
         </div>
     </nav>
 
-    <section class="header">
-        Empowering young minds through interactive learning
-    </section>
+    <section class="header d-flex align-items-left position-relative">
+    <div class="container text-start">
+        <h1 class="display-3 fw-bold text-white mb-4">LiteraLeap</h1>
+        <p class="fw-5 text-white">Empowering young minds with interactive learning, engaging stories, and smart literacy tools.</p>
+        
+        <div class="d-flex gap-3 mt-5">
+            <a href="{{ Auth::check() ? url('/dashboard') : route('register') }}" class="btn btn-light btn-lg fw-bold">
+                Sign Up for Free
+            </a>
+            <a href="{{ Auth::check() ? url('/dashboard') : route('login') }}" class="btn btn-outline-light btn-lg">
+                Sign In
+            </a>
+        </div>
+    </div>
+
+    <img src="{{ asset('images/booksforbg.png') }}" alt="Books Background"
+        class="header-bg-image">
+</section>
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
