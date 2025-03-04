@@ -3,59 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Test</title>
-    
+    <title>LiteraLeap</title>
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Custom Styling */
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .logo-wrapper {
+    position: relative;
+    left: 335px; /* Adjust this value as needed */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Adjust the gap between the LL logo and the separator if needed */
+}
+
+
+        .logo-separator {
+            height: 30px;
+            width: 3px;
+            background-color: #333; /* Darker for visibility */
+        }
+        .navbar-container {
+        
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding-left:0px;
+        }
+        .navbar-brand img {
+            height: 25px;
+        }
+    </style>
 </head>
-<body class="bg-light text-dark d-flex flex-column min-vh-100">
+<body>
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand fw-bold" href="{{ url('/') }}">MyApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+        <div class="container-fluid d-flex align-items-center">
+            <!-- Left Side: Logo + Separator -->
+            <div class="logo-wrapper">
+                <img src="{{ asset('images/LL_Logo_NoText.png') }}" alt="LiteraLeap Logo" height="40">
+                <div class="logo-separator"></div> <!-- Vertical Line -->
+            </div>
 
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                @if (Route::has('login'))
+            <div class="container navbar-container">
+                <!-- Brand Name Positioned Beside the Separator -->
+                <a class="navbar-brand d-flex align-items-center" href="#">
+                    <img src="{{ asset('images/Text_LiteraLeap.png') }}" alt="LiteraLeap">
+                </a>
+
+                <!-- Navbar Toggle for Mobile -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <!-- Left Side: Navigation Links -->
                     <ul class="navbar-nav">
-                        @auth
-                            <li class="nav-item">
-                                <a href="{{ url('/dashboard') }}" class="btn btn-outline-dark">Dashboard</a>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Log in</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
-                                </li>
-                            @endif
-                        @endauth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="plansDropdown" role="button" data-bs-toggle="dropdown">
+                                Plans and Pricing 
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Basic Plan</a></li>
+                                <li><a class="dropdown-item" href="#">Premium Plan</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="resourcesDropdown" role="button" data-bs-toggle="dropdown">
+                                Resources 
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">Blog</a></li>
+                                <li><a class="dropdown-item" href="#">Help Center</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Our Projects</a>
+                        </li>
                     </ul>
-                @endif
+
+                    <!-- Right Side: Search & User Login/Name -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="bi bi-search"></i>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            @auth
+                                <a class="nav-link fw-bold" href="{{ url('/dashboard') }}">
+                                    {{ Auth::user()->name }}
+                                </a>
+                            @else
+                                <a class="nav-link fw-bold" href="{{ route('login') }}">
+                                    Login
+                                </a>
+                            @endauth
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="container text-center my-5">
-        <h1 class="display-4 fw-bold text-primary">Welcome to MyApp</h1>
-        <p class="lead text-secondary">A modern Laravel + Bootstrap integration</p>
-        <a href="{{ url('/dashboard') }}" class="btn btn-lg btn-success mt-3">Get Started</a>
-    </div>
-
-    <!-- Footer -->
-    <footer class="mt-auto text-center py-3 bg-dark text-white">
-        &copy; {{ date('Y') }} MyApp - All Rights Reserved
-    </footer>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
