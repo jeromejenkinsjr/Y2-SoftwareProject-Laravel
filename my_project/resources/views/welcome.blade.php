@@ -30,7 +30,7 @@
             color: white;
             background: linear-gradient(45deg, #FCA714, #FF8C00, #FF1493);
             background-size: 200% 200%;
-            animation: gradientAnimation 8s infinite alternate ease-in-out;
+            animation: gradientAnimation 20s infinite alternate ease-in-out;
             overflow: hidden;
         }
 
@@ -63,7 +63,7 @@
         }
         .logo-wrapper {
             position: relative;
-            left: 320px; /* Adjust this value as needed */
+            /* left: 320px; Adjust this value as needed */
             display: flex;
             align-items: center;
             gap: 10px; /* Adjust the gap between the LL logo and the separator if needed */
