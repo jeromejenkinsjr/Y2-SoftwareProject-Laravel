@@ -8,16 +8,55 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
 
     <style>
+
+@keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header {
+            position: relative;
+            width: 100%;
+            height: 400px; /* Adjust height as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #FCA714, #FF8C00, #FF1493);
+            background-size: 200% 200%;
+            animation: gradientAnimation 8s infinite alternate ease-in-out;
+            overflow: hidden;
+        }
+
+        /* Wave Effect */
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: url('https://www.shapedivider.app/svg/wave-haikei.svg') no-repeat center bottom;
+            background-size: cover;
+        }
+
         /* Custom Styling */
         .navbar-custom {
             background-color: #ffffff;
             box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px ; 
         }
         .logo-wrapper {
     position: relative;
-    left: 335px; /* Adjust this value as needed */
+    left: 320px; /* Adjust this value as needed */
     display: flex;
     align-items: center;
     gap: 10px; /* Adjust the gap between the LL logo and the separator if needed */
@@ -49,14 +88,14 @@
         <div class="container-fluid d-flex align-items-center">
             <!-- Left Side: Logo + Separator -->
             <div class="logo-wrapper">
-                <img src="{{ asset('images/LL_Logo_NoText.png') }}" alt="LiteraLeap Logo" height="40">
+                <img src="{{ asset('images/LL_Logo_NoText.png') }}" alt="LiteraLeap Logo" height="45">
                 <div class="logo-separator"></div> <!-- Vertical Line -->
             </div>
 
             <div class="container navbar-container">
                 <!-- Brand Name Positioned Beside the Separator -->
                 <a class="navbar-brand d-flex align-items-center" href="#">
-                    <img src="{{ asset('images/Text_LiteraLeap.png') }}" alt="LiteraLeap">
+                    <img src="{{ asset('images/Text_LiteraLeap.png') }}" alt="LiteraLeap" height="30">
                 </a>
 
                 <!-- Navbar Toggle for Mobile -->
@@ -116,6 +155,10 @@
             </div>
         </div>
     </nav>
+
+    <section class="header">
+        Empowering young minds through interactive learning
+    </section>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
