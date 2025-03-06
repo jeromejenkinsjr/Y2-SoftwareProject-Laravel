@@ -21,7 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'profile_picture'
+        'profile_picture',
+        'credits',
     ];
 
     /**
@@ -46,4 +47,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function shopItems()
+{
+    return $this->belongsToMany(ShopItem::class, 'shop_item_user')
+                ->withPivot('purchased_at')
+                ->withTimestamps();
+}
+
 }

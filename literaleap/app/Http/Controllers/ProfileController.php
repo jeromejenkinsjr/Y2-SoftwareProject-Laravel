@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Laravel\Facades\Image;
+use App\Models\ShopItem;
+
 
 
 class ProfileController extends Controller
@@ -54,20 +56,36 @@ class ProfileController extends Controller
     public function updateProfilePicture(Request $request): RedirectResponse
     {
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max file size: 2MB
-            // Optionally you can enforce maximum dimensions on the uploaded file
-            'profile_picture' => 'dimensions:max_width=2000,max_height=2000',
-            'crop_x'   => 'nullable|numeric',
-            'crop_y'   => 'nullable|numeric',
-            'crop_width'  => 'nullable|numeric',
-            'crop_height' => 'nullable|numeric',
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048|dimensions:max_width=2000,max_height=2000',
+            'crop_x'          => 'nullable|numeric',
+            'crop_y'          => 'nullable|numeric',
+            'crop_width'      => 'nullable|numeric',
+            'crop_height'     => 'nullable|numeric',
+            'shop_item_id'    => 'nullable|exists:shop_items,id',
         ]);
 
         $user = Auth::user();
 
-        // If a file was uploaded, process it
+        // If a shop item is selected, use its image as the profile picture.
+        if ($request->filled('shop_item_id')) {
+            $shopItemId = $request->input('shop_item_id');
+            // Verify that the user owns the selected shop item.
+            if ($user->shopItems()->where('shop_item_id', $shopItemId)->exists()) {
+                $shopItem = ShopItem::find($shopItemId);
+                if ($shopItem) {
+                    // Optionally, you might want to process or simply assign the image path.
+                    $user->profile_picture = $shopItem->image;
+                    $user->save();
+                    return Redirect::route('profile.edit')->with('success', 'Profile picture updated successfully.');
+                }
+            } else {
+                return Redirect::route('profile.edit')->with('error', 'Selected shop item not owned.');
+            }
+        }
+
+        // Otherwise, if a file was uploaded, process it.
         if ($request->hasFile('profile_picture')) {
-            // Delete old picture if it exists
+            // Delete old profile picture if it exists.
             if ($user->profile_picture) {
                 Storage::delete('public/' . $user->profile_picture);
             }
@@ -75,7 +93,7 @@ class ProfileController extends Controller
             $file = $request->file('profile_picture');
             $img = Image::read($file->getRealPath());
 
-            // If crop coordinates were provided, crop the image
+            // If crop coordinates are provided, crop the image.
             if ($request->filled(['crop_x', 'crop_y', 'crop_width', 'crop_height'])) {
                 $cropX = (int) $request->input('crop_x');
                 $cropY = (int) $request->input('crop_y');
@@ -84,20 +102,20 @@ class ProfileController extends Controller
                 $img->crop($cropWidth, $cropHeight, $cropX, $cropY);
             }
 
-            // (Optional) Resize the image to desired final dimensions (e.g., 300x300)
+            // Resize the image to desired final dimensions (e.g., 300x300).
             $img->resize(300, 300, function ($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
 
-            // Define a unique file name and path
+            // Create a unique file name and path.
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = 'profile_pictures/' . $fileName;
 
-            // Save the processed image to storage
+            // Save the processed image to storage.
             $img->save(storage_path('app/public/' . $path));
 
-            // Update user's profile picture path
+            // Update user's profile picture path.
             $user->profile_picture = $path;
             $user->save();
         }
