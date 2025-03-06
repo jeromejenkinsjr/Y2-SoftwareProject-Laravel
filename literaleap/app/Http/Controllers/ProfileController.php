@@ -129,4 +129,52 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function register(Request $request)
+{
+    // Validate the incoming registration data
+    $data = $request->validate([
+        'name'            => 'required|string|max:255',
+        'email'           => 'required|string|email|max:255|unique:users',
+        'password'        => 'required|string|min:8|confirmed',
+        'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // Include any additional fields here...
+    ]);
+
+    // Create the new user
+    $user = new User();
+    $user->name     = $data['name'];
+    $user->email    = $data['email'];
+    $user->password = Hash::make($data['password']);
+
+    // Process the profile picture upload if provided
+    if ($request->hasFile('profile_picture')) {
+        $file = $request->file('profile_picture');
+
+        // For instance, using Intervention Image:
+        $img = Image::read($file->getRealPath());
+        $img->resize(300, 300, function ($constraint) {
+            $constraint->aspectRatio();
+            $constraint->upsize();
+        });
+
+        // Create a unique file name and path
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $path = 'profile_pictures/' . $fileName;
+        $img->save(storage_path('app/public/' . $path));
+
+        // Set the user's profile picture path
+        $user->profile_picture = $path;
+    } else {
+        // If no picture was uploaded (or skipped), assign the default avatar
+        $user->profile_picture = 'images/defaultava.jpg';
+    }
+
+    $user->save();
+
+    // Log the user in or redirect as needed
+    // For example:
+    Auth::login($user);
+    return redirect()->route('dashboard');
+}
+
 }

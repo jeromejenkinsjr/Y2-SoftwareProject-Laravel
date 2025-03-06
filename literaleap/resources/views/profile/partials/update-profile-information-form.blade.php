@@ -17,7 +17,7 @@
         @csrf
 
         <div class="mb-3 text-center">
-            <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('default-avatar.png') }}" 
+            <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('images/defaultava.jpg') }}" 
                  alt="Profile Picture" 
                  class="rounded-circle img-thumbnail shadow object-fit-cover"
                  style="width: 100px; height: 100px; object-fit: cover;">
