@@ -2,7 +2,7 @@
     <div class="container">
         <!-- Logo -->
         <a class="navbar-brand" href="{{ route('dashboard') }}">
-            <img src="{{ asset('LL.png') }}" alt="Logo" height="40">
+            <img src="{{ asset('images/LL_Logo_NoText.png') }}" alt="Logo" height="40">
         </a>
 
         <!-- Hamburger Menu (Mobile) -->
