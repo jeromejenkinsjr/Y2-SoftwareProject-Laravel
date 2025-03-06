@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Laravel\Facades\Image;
+
 
 class ProfileController extends Controller
 {
@@ -29,13 +31,12 @@ class ProfileController extends Controller
     {
         $user = $request->user();
         
-        // Ensure name and email are not empty
+        // Validate name and email
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'  => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
         ]);
 
-        // Update user details
         $user->fill($validated);
 
         if ($user->isDirty('email')) {
@@ -48,25 +49,53 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile picture.
+     * Update the user's profile picture with cropping.
      */
     public function updateProfilePicture(Request $request): RedirectResponse
     {
         $request->validate([
-            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Ensure it's a valid image
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // max file size: 2MB
+            // Optionally you can enforce maximum dimensions on the uploaded file
+            'profile_picture' => 'dimensions:max_width=2000,max_height=2000',
+            'crop_x'   => 'nullable|numeric',
+            'crop_y'   => 'nullable|numeric',
+            'crop_width'  => 'nullable|numeric',
+            'crop_height' => 'nullable|numeric',
         ]);
 
         $user = Auth::user();
 
-        // Check if an image was uploaded
+        // If a file was uploaded, process it
         if ($request->hasFile('profile_picture')) {
-            // Delete the old profile picture if it exists
+            // Delete old picture if it exists
             if ($user->profile_picture) {
                 Storage::delete('public/' . $user->profile_picture);
             }
 
-            // Store the new profile picture
-            $path = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $file = $request->file('profile_picture');
+            $img = Image::read($file->getRealPath());
+
+            // If crop coordinates were provided, crop the image
+            if ($request->filled(['crop_x', 'crop_y', 'crop_width', 'crop_height'])) {
+                $cropX = (int) $request->input('crop_x');
+                $cropY = (int) $request->input('crop_y');
+                $cropWidth = (int) $request->input('crop_width');
+                $cropHeight = (int) $request->input('crop_height');
+                $img->crop($cropWidth, $cropHeight, $cropX, $cropY);
+            }
+
+            // (Optional) Resize the image to desired final dimensions (e.g., 300x300)
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
+
+            // Define a unique file name and path
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = 'profile_pictures/' . $fileName;
+
+            // Save the processed image to storage
+            $img->save(storage_path('app/public/' . $path));
 
             // Update user's profile picture path
             $user->profile_picture = $path;
@@ -93,7 +122,6 @@ class ProfileController extends Controller
         }
 
         Auth::logout();
-
         $user->delete();
 
         $request->session()->invalidate();

@@ -17,19 +17,31 @@
         @csrf
 
         <div class="mb-3 text-center">
-    <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('default-avatar.png') }}" 
-         alt="Profile Picture" 
-         class="rounded-circle img-thumbnail shadow object-fit-cover"
-         style="width: 100px; height: 100px; object-fit: cover;">
-</div>
-
+            <img src="{{ Auth::user()->profile_picture ? asset('storage/' . Auth::user()->profile_picture) : asset('default-avatar.png') }}" 
+                 alt="Profile Picture" 
+                 class="rounded-circle img-thumbnail shadow object-fit-cover"
+                 style="width: 100px; height: 100px; object-fit: cover;">
+        </div>
 
         <div class="mb-3">
             <label for="profile_picture" class="form-label">{{ __('Upload New Profile Picture') }}</label>
-            <input type="file" name="profile_picture" class="form-control @error('profile_picture') is-invalid @enderror" accept="image/*">
+            <input type="file" id="profile_picture" name="profile_picture" class="form-control @error('profile_picture') is-invalid @enderror" accept="image/*">
             @error('profile_picture')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
+        </div>
+
+        <!-- Hidden fields for cropping coordinates -->
+        <input type="hidden" name="crop_x" id="crop_x">
+        <input type="hidden" name="crop_y" id="crop_y">
+        <input type="hidden" name="crop_width" id="crop_width">
+        <input type="hidden" name="crop_height" id="crop_height">
+
+        <!-- Container to display the cropping area (initially hidden) -->
+        <div id="crop-container" style="display:none; margin-bottom: 1rem;">
+            <h5>{{ __('Adjust your crop selection') }}</h5>
+            <img id="crop-image" style="max-width: 100%;" alt="Crop Preview">
+            <button type="button" id="crop-btn" class="btn btn-secondary mt-2">{{ __('Crop Image') }}</button>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">{{ __('Update Profile Picture') }}</button>
@@ -64,3 +76,60 @@
         </div>
     </form>
 </section>
+
+<!-- Include CropperJS CSS & JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    let cropper;
+    const fileInput = document.getElementById('profile_picture');
+    const cropContainer = document.getElementById('crop-container');
+    const cropImage = document.getElementById('crop-image');
+    const cropBtn = document.getElementById('crop-btn');
+
+    fileInput.addEventListener('change', function (e) {
+        const files = e.target.files;
+        if (files && files.length > 0) {
+            const file = files[0];
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                cropImage.src = event.target.result;
+                cropContainer.style.display = 'block';
+                
+                // Destroy previous cropper instance if exists
+                if (cropper) {
+                    cropper.destroy();
+                }
+                
+                // Initialize CropperJS with a fixed 1:1 aspect ratio
+                cropper = new Cropper(cropImage, {
+                    aspectRatio: 1,
+                    viewMode: 1,
+                    movable: true,
+                    zoomable: true,
+                    rotatable: false,
+                    scalable: false,
+                    // If needed, add additional options to lock the crop box or provide guides.
+                });
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+
+    cropBtn.addEventListener('click', function () {
+        if (cropper) {
+            // Get cropping data
+            const data = cropper.getData(true); // rounded values
+            document.getElementById('crop_x').value = data.x;
+            document.getElementById('crop_y').value = data.y;
+            document.getElementById('crop_width').value = data.width;
+            document.getElementById('crop_height').value = data.height;
+
+            // Optionally, you can update the preview and hide the crop container
+            cropContainer.style.display = 'none';
+        }
+    });
+});
+</script>
