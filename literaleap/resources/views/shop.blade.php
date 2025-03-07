@@ -26,8 +26,9 @@
                     <h4>{{ $shopItem->name }}</h4>
                 </div>
                 <div class="card-body text-center">
-                    <img src="{{ asset($shopItem->image) }}" alt="{{ $shopItem->name }}" class="img-fluid mb-3"
-                        style="max-width: 200px;">
+                    <img src="{{ asset($shopItem->image) }}" alt="{{ $shopItem->name }}"
+                        class="rounded-circle img-thumbnail shadow mb-3"
+                        style="width: 100px; height: 100px; object-fit: cover;">
                     <p>{{ $shopItem->description }}</p>
                     <h5>Price: {{ $shopItem->price }} Credit{{ $shopItem->price > 1 ? 's' : '' }}</h5>
 
@@ -45,6 +46,7 @@
                     @endif
                 </div>
             </div>
+
         </div>
         @endforeach
     </div>

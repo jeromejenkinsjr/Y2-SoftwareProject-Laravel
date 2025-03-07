@@ -89,12 +89,16 @@
                                         @endphp
                                         @if(in_array($extension, ['gif', 'png', 'avif', 'jpeg', 'jpg']))
                                         <div class="col-4 mb-2">
-                                            <div class="card shop-item-selection"
-                                                data-shop-item-id="{{ $shopItem->id }}" style="cursor: pointer;">
-                                                <img src="{{ asset($shopItem->image) }}" class="card-img-top"
-                                                    alt="{{ $shopItem->name }}">
+                                            <div class="card shop-item-selection d-flex align-items-center justify-content-center p-3"
+                                                data-shop-item-id="{{ $shopItem->id }}"
+                                                style="cursor: pointer; height: 100%;">
+                                                <img src="{{ asset($shopItem->image) }}"
+                                                    class="rounded-circle img-thumbnail shadow"
+                                                    alt="{{ $shopItem->name }}"
+                                                    style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                         </div>
+
                                         @endif
                                         @endforeach
                                     </div>
