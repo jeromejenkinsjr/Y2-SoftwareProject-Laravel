@@ -31,6 +31,7 @@
 @endsection
 @section('scripts')
 <!-- Load p5.js from a CDN -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+// <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
 <script src="{{ asset($game->file) }}"></script>
 @endsection
