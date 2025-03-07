@@ -30,13 +30,11 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/shop/buy-item/{item}', [ShopController::class, 'buyItem'])->name('shop.buyItem');
 
-Route::get('/game', function () {
-    return view('games');
-})->name('game');
-
 Route::middleware(['auth'])->group(function () {
     Route::post('/add-credit', [GameController::class, 'addCredit']);
 });
 
+Route::get('/games', [GameController::class, 'index'])->name('games.index');
+Route::get('/games/{game}', [GameController::class, 'show'])->name('games.show');
 
 require __DIR__.'/auth.php';

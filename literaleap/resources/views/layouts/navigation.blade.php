@@ -23,8 +23,8 @@
                         href="{{ route('shop') }}">{{ __('Shop') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('game') ? 'active' : '' }}"
-                        href="{{ route('game') }}">{{ __('Games') }}</a>
+                    <a class="nav-link {{ request()->routeIs('games.index') ? 'active' : '' }}"
+                        href="{{ route('games.index') }}">{{ __('Games') }}</a>
                 </li>
             </ul>
 

@@ -2,23 +2,25 @@
 
 @section('content')
 <div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h2 class="mb-0">{{ __('My p5.js Game') }}</h2>
-                </div>
-                <div class="card-body text-center">
-                    <h5 class="text-muted">Welcome to My p5.js Game</h5>
-                    <div id="game-container" class="mt-4"></div>
+    <div class="row">
+        @foreach($games as $game)
+        <div class="col-md-4 mb-4">
+            <div class="card h-100" style="cursor: pointer;"
+                onclick="window.location='{{ route('games.show', $game->id) }}'">
+                <img src="{{ asset($game->thumbnail) }}" class="card-img-top" alt="{{ $game->title }}"
+                    style="object-fit: cover; height:200px;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $game->title }}</h5>
+                    <p class="card-text">{{ \Illuminate\Support\Str::limit($game->description, 100) }}</p>
+                    <div>
+                        @foreach($game->categories as $category)
+                        <span class="badge bg-secondary">{{ $category->name }}</span>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
+        @endforeach
     </div>
 </div>
-@endsection
-
-@section('scripts')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
-<script src="{{ asset('js/game.js') }}"></script>
 @endsection

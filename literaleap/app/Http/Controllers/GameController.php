@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Game;
+
 
 class GameController extends Controller
 {
@@ -17,5 +21,17 @@ class GameController extends Controller
             'message' => 'Credit added successfully!',
             'credits' => $user->credits
         ]);
+    }
+
+    public function index()
+    {
+        
+        $games = Game::with('categories')->get();
+        return view('games', compact('games'));
+    }
+
+    public function show(Game $game)
+    {
+        return view('game.show', compact('game'));
     }
 }
