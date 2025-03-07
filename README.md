@@ -1,4 +1,4 @@
-# ![LiteraLeap Logo](literaleap/public/images/LL_Logo_Plain.png)
+# ![LiteraLeap Logo](literaleap/public/images/favicon.ico)
 
 ## LiteraLeap
 
@@ -38,8 +38,7 @@ The idea behind the project is to provide **quality English education** to child
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/literaleap.git
-   cd literaleap
+   git clone https://github.com/jeromejenkinsjr/Y2-SoftwareProject-Laravel
    ```
 2. Install dependencies:
    ```sh
@@ -59,7 +58,7 @@ The idea behind the project is to provide **quality English education** to child
    ```sh
    php artisan serve
    ```
-6. Run frontend assets (if applicable):
+6. Run frontend assets:
    ```sh
    npm run dev
    ```
