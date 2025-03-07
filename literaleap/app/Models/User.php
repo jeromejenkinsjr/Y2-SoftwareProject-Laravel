@@ -23,6 +23,8 @@ class User extends Authenticatable
         'password',
         'profile_picture',
         'credits',
+        'xp',
+        'level',
     ];
 
     /**
@@ -54,5 +56,20 @@ class User extends Authenticatable
                 ->withPivot('purchased_at')
                 ->withTimestamps();
 }
+
+public function checkLevelUp()
+    {
+        $levelThresholds = [0, 10, 25, 50, 100, 200, 500, 1000]; 
+
+        for ($i = count($levelThresholds) - 1; $i >= 0; $i--) {
+            if ($this->xp >= $levelThresholds[$i]) {
+                if ($this->level < $i + 1) {
+                    $this->level = $i + 1;
+                    $this->save();
+                }
+                break;
+            }
+        }
+    }
 
 }

@@ -19,12 +19,12 @@
                         href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('shop') ? 'active' : '' }}"
-                        href="{{ route('shop') }}">{{ __('Shop') }}</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('games.index') ? 'active' : '' }}"
                         href="{{ route('games.index') }}">{{ __('Games') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('shop') ? 'active' : '' }}"
+                        href="{{ route('shop') }}">{{ __('Shop') }}</a>
                 </li>
             </ul>
 

@@ -23,8 +23,39 @@
 </head>
 
 <body>
-    <!-- Main Block: No navbar or extra background -->
     <div class="container py-5">
+        @php
+        // Define XP thresholds for levels (adjust as needed)
+        $thresholds = [0, 10, 25, 50, 100, 200, 500, 1000];
+        $currentLevel = auth()->user()->level;
+        $currentXP = auth()->user()->xp;
+        // Calculate minimum XP for current level and XP needed for next level
+        $minXP = $thresholds[$currentLevel - 1] ?? 0;
+        $maxXP = $thresholds[$currentLevel] ?? $currentXP;
+        $xpForLevel = $maxXP - $minXP;
+        $xpProgress = $currentXP - $minXP;
+        $progressPercent = $xpForLevel > 0 ? ($xpProgress / $xpForLevel) * 100 : 100;
+        @endphp
+
+        <div class="mb-3 row">
+            <label for="xp-progress" class="col-sm-2 col-form-label">Experience (XP)</label>
+            <div class="col-sm-8">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                        style="width: {{ $progressPercent }}% ; background-color: orange;"
+                        aria-valuenow="{{ $xpProgress }}" aria-valuemin="{{ $minXP }}" aria-valuemax="{{ $maxXP }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2 text-end">
+                <span>{{ auth()->user()->xp }} XP</span>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <p class="mb-0"><strong>Level: {{ auth()->user()->level }}</strong></p>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <!-- Profile Information Card -->
