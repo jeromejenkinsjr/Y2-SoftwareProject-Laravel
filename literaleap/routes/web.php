@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\GameController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,14 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::post('/shop/buy-item/{item}', [ShopController::class, 'buyItem'])->name('shop.buyItem');
+
+Route::get('/game', function () {
+    return view('games');
+})->name('game');
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/add-credit', [GameController::class, 'addCredit']);
+});
 
 
 require __DIR__.'/auth.php';

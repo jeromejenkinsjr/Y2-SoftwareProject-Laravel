@@ -80,7 +80,8 @@
 
                                 <!-- Purchased Shop Items Section -->
                                 <div class="mb-3">
-                                    <h5>Or select one of your purchased shop items as your profile picture</h5>
+                                    <p class="text-muted">Or select one of your purchased shop items as your profile
+                                        picture</p>
                                     <div class="row">
                                         @foreach(auth()->user()->shopItems as $shopItem)
                                         @php

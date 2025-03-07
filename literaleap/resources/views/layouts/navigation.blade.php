@@ -22,6 +22,10 @@
                     <a class="nav-link {{ request()->routeIs('shop') ? 'active' : '' }}"
                         href="{{ route('shop') }}">{{ __('Shop') }}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('game') ? 'active' : '' }}"
+                        href="{{ route('game') }}">{{ __('Games') }}</a>
+                </li>
             </ul>
 
             <!-- User Dropdown with Profile Picture -->
