@@ -25,6 +25,8 @@ class User extends Authenticatable
         'credits',
         'xp',
         'level',
+        'role',
+        'premium',
     ];
 
     /**
