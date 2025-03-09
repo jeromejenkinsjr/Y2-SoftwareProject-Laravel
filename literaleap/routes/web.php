@@ -4,6 +4,10 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\ForumController;
+
+use App\Models\Post;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,5 +40,16 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/games', [GameController::class, 'index'])->name('games.index');
 Route::get('/games/{game}', [GameController::class, 'show'])->name('games.show');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::post('/forum/{post}/reply', [ForumController::class, 'reply'])->name('forum.reply');
+        Route::post('/forum/{post}/like', [ForumController::class, 'like'])->name('forum.like');
+    Route::post('/forum/{post}/dislike', [ForumController::class, 'dislike'])->name('forum.dislike');
+});
+
+
 
 require __DIR__.'/auth.php';
