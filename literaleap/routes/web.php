@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ForumController;
+use App\Http\Controllers\Auth\GoogleController;
 
 use App\Models\Post;
 
@@ -49,7 +50,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/forum/{post}/like', [ForumController::class, 'like'])->name('forum.like');
     Route::post('/forum/{post}/dislike', [ForumController::class, 'dislike'])->name('forum.dislike');
 });
-
-
-
+Route::middleware('guest')->group(function () {
+Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])
+    ->name('auth.google');
+Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])
+    ->name('auth.google.callback');
+});
 require __DIR__.'/auth.php';

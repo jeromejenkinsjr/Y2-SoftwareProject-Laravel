@@ -17,6 +17,16 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+    .card-body {
+        width: 80%;
+        max-width: 800px;
+        min-height: 200px;
+        padding: 2rem;
+        margin: 0 auto;
+    }
+    </style>
+
 </head>
 
 <body class="bg-light">
@@ -27,10 +37,10 @@
             </a>
         </div>
 
-        <div class="card shadow" style="width: 100%; max-width: 400px;">
-            <div class="card-body">
-                {{ $slot }}
-            </div>
+
+        <div class="card-body">
+            {{ $slot }}
+
         </div>
     </div>
 
