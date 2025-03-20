@@ -60,6 +60,9 @@ Route::get('/termsprivacy', function () {
     return view('termsprivacy');
 })->name('termsprivacy');
 
+Route::post('/profile/update-icon', [ProfileController::class, 'updateIcon'])->name('profile.updateIcon');
+
+
 Route::get('/test-gd', function () {
     dd(extension_loaded('gd'));
 });

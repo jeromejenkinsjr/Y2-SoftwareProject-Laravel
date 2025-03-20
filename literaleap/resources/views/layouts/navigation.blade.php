@@ -45,6 +45,14 @@
                         ? asset($profilePicture)
                         : asset('storage/' . $profilePicture))
                         : asset('images/defaultava.jpg');
+
+                        // Retrieve user's selected profile icon (20x20) from purchased icons
+                        $userIcons = Auth::user()->shopItems->where('type', 'icon');
+                        $selectedIcon = Auth::user()->profile_icon
+                        ? $userIcons->where('image', Auth::user()->profile_icon)->first()
+                        : null;
+                        $profileIconUrl = $selectedIcon ? asset($selectedIcon->image) :
+                        asset('images/default-icon.png');
                         @endphp
 
                         <!-- Profile Picture -->
@@ -52,6 +60,10 @@
                             style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #000;">
 
                         {{ Auth::user()->name }}
+
+                        <!-- Selected Icon (20x20) beside the user's name -->
+                        <img src="{{ $profileIconUrl }}" alt="Profile Icon" class="rounded-circle ms-2"
+                            style="width: 20px; height: 20px; object-fit: cover;">
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
@@ -67,6 +79,7 @@
                     </ul>
                 </li>
             </ul>
+
             @endauth
         </div>
     </div>

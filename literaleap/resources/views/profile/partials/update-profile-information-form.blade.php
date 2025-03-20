@@ -114,7 +114,7 @@
                                     <p class="text-muted">Or select one of your purchased shop items as your profile
                                         picture</p>
                                     <div class="row">
-                                        @foreach(auth()->user()->shopItems as $shopItem)
+                                        @foreach(auth()->user()->shopItems->where('type', 'item') as $shopItem)
                                         @php
                                         $extension = strtolower(pathinfo($shopItem->image, PATHINFO_EXTENSION));
                                         @endphp
@@ -129,7 +129,6 @@
                                                     style="width: 100px; height: 100px; object-fit: cover;">
                                             </div>
                                         </div>
-
                                         @endif
                                         @endforeach
                                     </div>
@@ -147,6 +146,57 @@
                                 <button type="submit" class="btn btn-primary w-100">Update Profile Picture</button>
                             </form>
                             <!-- End of Profile Picture Upload Form -->
+
+                            <!-- User's Icons Preview -->
+                            <div class="mb-4 text-center">
+                                <h5 class="text-primary">Profile Icon Preview</h5>
+                                @php
+                                $userIcons = auth()->user()->shopItems->where('type', 'icon');
+                                $selectedIcon = auth()->user()->profile_icon
+                                ? $userIcons->where('image', auth()->user()->profile_icon)->first()
+                                : null;
+                                $selectedIconUrl = $selectedIcon ? asset($selectedIcon->image) :
+                                asset('images/default-icon.png');
+                                @endphp
+
+                                <!-- Display the user's name with the selected icon to its right -->
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <span class="fs-5 me-1">{{ auth()->user()->name }}</span>
+                                    <img id="selected-icon" src="{{ $selectedIconUrl }}" alt="User Icon"
+                                        class="rounded-circle" style="width: 20px; height: 20px; object-fit: cover;">
+                                </div>
+                                <p id="selected-icon-name" class="mt-2">
+                                    {{ $selectedIcon ? $selectedIcon->name : 'No Icon Selected' }}
+                                </p>
+
+                                <!-- Icon Selection Form -->
+                                @if($userIcons->count() > 0)
+                                <form method="POST" action="{{ route('profile.updateIcon') }}">
+                                    @csrf
+                                    <input type="hidden" name="selected_icon_id" id="selected_icon_id"
+                                        value="{{ $selectedIcon ? $selectedIcon->id : '' }}">
+
+                                    <div class="row justify-content-center">
+                                        @foreach($userIcons as $icon)
+                                        <div class="col-3 mb-2">
+                                            <div class="card icon-selection d-flex align-items-center justify-content-center p-2"
+                                                data-icon-id="{{ $icon->id }}" data-icon-name="{{ $icon->name }}"
+                                                data-icon-url="{{ asset($icon->image) }}" style="cursor: pointer;">
+                                                <img src="{{ asset($icon->image) }}" class="rounded-circle"
+                                                    alt="{{ $icon->name }}"
+                                                    style="width: 60px; height: 60px; object-fit: cover;">
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary mt-3">Set as Profile Icon</button>
+                                </form>
+                                @else
+                                <p class="text-muted">You haven't purchased any icons yet.</p>
+                                @endif
+                            </div>
+
 
                             <!-- Profile Information Update Form -->
                             <form method="POST" action="{{ url('/profile/update') }}" class="p-4 rounded">
@@ -253,6 +303,46 @@
                 document.getElementById('crop_width').value = "";
                 document.getElementById('crop_height').value = "";
             });
+        });
+    });
+    </script>
+    <script>
+    document.querySelectorAll('.icon-selection').forEach(function(card) {
+        card.addEventListener('click', function() {
+            let iconId = card.getAttribute('data-icon-id');
+            let iconName = card.getAttribute('data-icon-name');
+            let iconUrl = card.getAttribute('data-icon-url');
+
+            // Update the currently selected icon display
+            document.getElementById('selected-icon').src = iconUrl;
+            document.getElementById('selected-icon-name').textContent = iconName;
+            document.getElementById('selected_icon_id').value = iconId;
+
+            // Highlight the selected icon
+            document.querySelectorAll('.icon-selection').forEach(function(c) {
+                c.classList.remove('border', 'border-primary');
+            });
+            card.classList.add('border', 'border-primary');
+        });
+    });
+    </script>
+    <script>
+    document.querySelectorAll('.icon-selection').forEach(function(card) {
+        card.addEventListener('click', function() {
+            let iconId = card.getAttribute('data-icon-id');
+            let iconName = card.getAttribute('data-icon-name');
+            let iconUrl = card.getAttribute('data-icon-url');
+
+            // Update the currently selected icon display
+            document.getElementById('selected-icon').src = iconUrl;
+            document.getElementById('selected-icon-name').textContent = iconName;
+            document.getElementById('selected_icon_id').value = iconId;
+
+            // Highlight the selected icon
+            document.querySelectorAll('.icon-selection').forEach(function(c) {
+                c.classList.remove('border', 'border-primary');
+            });
+            card.classList.add('border', 'border-primary');
         });
     });
     </script>

@@ -168,7 +168,7 @@ class ProfileController extends Controller
     if ($request->hasFile('profile_picture')) {
         $file = $request->file('profile_picture');
 
-        // For instance, using Intervention Image:
+        //Intervention Image:
         $img = Image::read($file->getRealPath());
         $img->resize(300, 300, function ($constraint) {
             $constraint->aspectRatio();
@@ -190,9 +190,30 @@ class ProfileController extends Controller
     $user->save();
 
     // Log the user in or redirect as needed
-    // For example:
     Auth::login($user);
     return redirect()->route('dashboard');
+}
+
+public function updateIcon(Request $request)
+{
+    $request->validate([
+        'selected_icon_id' => 'required|exists:shop_items,id'
+    ]);
+
+    $user = Auth::user();
+    $selectedIcon = ShopItem::where('id', $request->selected_icon_id)
+                            ->where('type', 'icon')
+                            ->first();
+
+    if (!$selectedIcon) {
+        return redirect()->back()->with('error', 'Invalid icon selection.');
+    }
+
+    // Update user's profile icon
+    $user->profile_icon = $selectedIcon->image;
+    $user->save();
+
+    return redirect()->back()->with('success', 'Profile icon updated successfully!');
 }
 
 }
