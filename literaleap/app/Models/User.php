@@ -75,4 +75,8 @@ public function checkLevelUp()
         }
     }
 
+    public function icon() {
+        return $this->belongsTo(Icon::class);
+    }
+    
 }
