@@ -9,7 +9,6 @@ use App\Http\Controllers\Auth\GoogleController;
 
 use App\Models\Post;
 
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -56,4 +55,13 @@ Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])
 Route::get('auth/google/callback', [GoogleController::class, 'handleGoogleCallback'])
     ->name('auth.google.callback');
 });
+
+Route::get('/termsprivacy', function () {
+    return view('termsprivacy');
+})->name('termsprivacy');
+
+Route::get('/test-gd', function () {
+    dd(extension_loaded('gd'));
+});
+
 require __DIR__.'/auth.php';

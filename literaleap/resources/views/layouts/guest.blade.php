@@ -33,7 +33,7 @@
     <div class="d-flex flex-column justify-content-center align-items-center min-vh-100 pt-3">
         <div class="mb-4">
             <a href="/">
-                <x-application-logo class="d-block" style="width: 80px; height: 80px;" />
+
             </a>
         </div>
 

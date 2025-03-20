@@ -1,16 +1,71 @@
 <x-guest-layout>
+    <!-- Scrolling background-->
+    <div class="scrolling-text-rows">
+        <div class="scrolling-text-container" style="top: 10%;">
+            <div class="scrolling-text">
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+            </div>
+        </div>
+        <div class="scrolling-text-container" style="top: 30%;">
+            <div class="scrolling-text">
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+            </div>
+        </div>
+        <div class="scrolling-text-container" style="top: 50%;">
+            <div class="scrolling-text">
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+            </div>
+        </div>
+        <div class="scrolling-text-container" style="top: 70%;">
+            <div class="scrolling-text">
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+            </div>
+        </div>
+        <div class="scrolling-text-container" style="top: 90%;">
+            <div class="scrolling-text">
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+                <span>LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap LiteraLeap</span>
+            </div>
+        </div>
+    </div>
+
+
     <!-- Landing Section: Two buttons -->
     <div class="container my-5" id="landing">
         <div class="row justify-content-center">
-            <div class="col-md-6 text-center">
-                <!-- Button for Google Sign in -->
-                <a href="{{ route('auth.google') }}" class="btn btn-light mb-3">
-                    <img src="{{ asset('images/gicon.png') }}" alt="Google Logo" style="width:32px; margin-right:8px;">
-                    Sign in with Google
-                </a>
-                <br>
-                <!-- Button to show registration form -->
-                <button id="btn-register" class="btn btn-secondary">Register with Email</button>
+            <div class="col-md-6">
+                <div class="card border rounded-4 shadow p-4 text-center">
+                    <!-- Centered Logo -->
+                    <img src="{{ asset('images/LL_Logo_NoText.png') }}" alt="LiteraLeap Logo"
+                        class="mx-auto d-block mb-3" style="width: 80px;">
+
+                    <!-- Google Sign-in Button -->
+                    <a href="{{ route('auth.google') }}"
+                        class="btn btn-light mt-4 mb-3 d-flex align-items-center justify-content-center">
+                        <img src="{{ asset('images/gicon.png') }}" alt="Google Logo"
+                            style="width: 24px; margin-right: 8px;">
+                        Sign in with Google
+                    </a>
+
+                    <!-- Registration Button -->
+                    <button id="btn-register" class="btn btn-secondary w-100">Register with Email</button>
+
+                    <!-- Terms & Privacy Acknowledgment -->
+                    <p class="text-muted mt-5 small">
+                        By signing up, you agree to our
+                        <a href="{{ route('termsprivacy') }}" class="text-decoration-none">Terms & Privacy Policy</a>.
+                    </p>
+
+                    <!-- Already Have an Account? -->
+                    <p class="mt-2 small">
+                        Already have an account?
+                        <a href="{{ route('login') }}" class="fw-bold text-decoration-none">Sign in</a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -120,6 +175,81 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js" crossorigin="anonymous"
         referrerpolicy="no-referrer"></script>
+
+    <!-- External CSS for Background -->
+    <style>
+    /* Scrolling Background Text */
+    /* Container for all rows – fills the viewport */
+    .scrolling-text-rows {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        /* so that it doesn’t interfere with other elements */
+    }
+
+    /* Each scrolling row */
+    .scrolling-text-container {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
+    /* Scrolling text styling */
+    .scrolling-text {
+        display: inline-block;
+        font-size: 4rem;
+        font-weight: bold;
+        text-transform: uppercase;
+        animation: scrollText 120s linear infinite;
+    }
+
+    /* Add a gap between duplicates if needed */
+    .scrolling-text span {
+        margin-right: 100px;
+    }
+
+    /* Keyframes: the text moves left by 50% of its total width (because we have 2 copies) */
+    @keyframes scrollText {
+        0% {
+            transform: translateX(0);
+        }
+
+        100% {
+            transform: translateX(-50%);
+        }
+    }
+
+    /* Progressive opacity for each row */
+    .scrolling-text-rows .scrolling-text-container:nth-child(1) .scrolling-text {
+        color: rgba(0, 0, 0, 0.1);
+        animation-delay: 0s;
+    }
+
+    .scrolling-text-rows .scrolling-text-container:nth-child(2) .scrolling-text {
+        color: rgba(0, 0, 0, 0.08);
+        animation-delay: -2s;
+    }
+
+    .scrolling-text-rows .scrolling-text-container:nth-child(3) .scrolling-text {
+        color: rgba(0, 0, 0, 0.06);
+        animation-delay: -4s;
+    }
+
+    .scrolling-text-rows .scrolling-text-container:nth-child(4) .scrolling-text {
+        color: rgba(0, 0, 0, 0.04);
+        animation-delay: -6s;
+    }
+
+    .scrolling-text-rows .scrolling-text-container:nth-child(5) .scrolling-text {
+        color: rgba(0, 0, 0, 0.02);
+        animation-delay: -8s;
+    }
+    </style>
 
     <!-- JavaScript to handle both the multi-step form and the smooth transition -->
     <script>

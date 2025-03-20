@@ -11,13 +11,12 @@ class ForumController extends Controller
     public function index()
     {
         $posts = Post::with('replies.user')->latest()->get();
-        // Return your existing forum view
         return view('forum', compact('posts'));
     }
 
     public function create()
     {
-        return view('forum.create'); // Adjust the view as needed
+        return view('forum.create');
     }
 
     public function store(Request $request)
@@ -25,12 +24,19 @@ class ForumController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'body'  => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('forum_images', 'public');
+        }
+    
         Post::create([
             'user_id' => auth()->id(),
             'title'   => $request->title,
             'body'    => $request->body,
+            'image'   => $imagePath,
         ]);
 
         return redirect()->route('forum.index')->with('success', 'Post created successfully.');

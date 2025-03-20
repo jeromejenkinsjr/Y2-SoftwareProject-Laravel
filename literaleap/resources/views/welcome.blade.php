@@ -129,13 +129,20 @@
     .content-panel.slide-in-left {
         left: 0;
     }
+
+    .modal-content {
+        background-color: #2c3e50;
+        /* Dark blue */
+        color: white;
+        /* White text for contrast */
+    }
     </style>
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation Bar -->
+    <!-- Navbar-->
     <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container-fluid d-flex align-items-center">
             <!-- Left Side: Logo + Separator -->
@@ -180,35 +187,96 @@
                             </ul>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Our Projects</a>
+                        <li class="nav-item d-flex align-items-center">
+                            <a class="nav-link" href="#" onclick="confirmRedirect(event)">Our Projects</a>
+
+                            <img src="{{ asset('images/github-mark.png') }}" alt="GitHub" height="25" class="ms-2">
                         </li>
+                        <div class="modal fade" id="githubRedirectModal" tabindex="-1"
+                            aria-labelledby="githubRedirectModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <!-- GitHub Logo and Title -->
+                                        <h5 class="modal-title d-flex align-items-center" id="githubRedirectModalLabel">
+                                            <img src="{{ asset('images/github-mark-white.png') }}" alt="GitHub Logo"
+                                                height="30" class="me-2">
+                                            Redirect Notice
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        You will be redirected to GitHub
+                                        (<strong><u>github.com/jeromejenkinsjr</u>
+                                        </strong>).
+                                        Do you want to proceed?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Cancel</button>
+                                        <a id="proceedLink" href="https://github.com/jeromejenkinsjr" target="_blank"
+                                            rel="noopener noreferrer" class="btn btn-light">Proceed</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </ul>
 
-                    <!-- Right Side: Search & User Login/Name -->
-                    <ul class="navbar-nav">
+                    <!-- Right Side: Search & User Login/Profile -->
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <i class="bi bi-search"></i>
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            @auth
-                            <a class="nav-link fw-bold" href="{{ url('/dashboard') }}">
+                        @auth
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                @php
+                                $profilePicture = Auth::user()->profile_picture;
+                                $profilePictureUrl = $profilePicture
+                                ? (\Illuminate\Support\Str::startsWith($profilePicture, 'images/')
+                                ? asset($profilePicture)
+                                : asset('storage/' . $profilePicture))
+                                : asset('images/defaultava.jpg');
+                                @endphp
+
+                                <!-- Profile Picture -->
+                                <img src="{{ $profilePictureUrl }}" alt="Profile Picture" class="rounded-circle me-2"
+                                    style="width: 35px; height: 35px; object-fit: cover; border: 1px solid #000;">
+
                                 {{ Auth::user()->name }}
                             </a>
-                            @else
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button class="dropdown-item" type="submit">{{ __('Log Out') }}</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        @else
+                        <li class="nav-item">
                             <a class="nav-link fw-bold" href="{{ route('login') }}">
                                 Login
                             </a>
-                            @endauth
                         </li>
+                        @endauth
                     </ul>
                 </div>
             </div>
         </div>
     </nav>
+
 
     <section class="header d-flex align-items-left position-relative">
         <div class="container text-start">
@@ -292,8 +360,6 @@
         </div>
     </section>
 
-
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -339,7 +405,14 @@
         });
     });
     </script>
-
+    <!-- JavaScript to trigger modal -->
+    <script>
+    function confirmRedirect(event) {
+        event.preventDefault();
+        var myModal = new bootstrap.Modal(document.getElementById('githubRedirectModal'));
+        myModal.show();
+    }
+    </script>
 </body>
 
 </html>
