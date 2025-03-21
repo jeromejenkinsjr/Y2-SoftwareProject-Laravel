@@ -17,13 +17,11 @@
         0% {
             background-position: 0% 50%;
             animation-timing-function: ease-out;
-            /* Start with a fast move then slow */
         }
 
         50% {
             background-position: 100% 50%;
             animation-timing-function: ease-in;
-            /* On the way back, start slowly then speed up */
         }
 
         100% {
@@ -43,7 +41,7 @@
         color: white;
         background: linear-gradient(45deg, #FCA714, #FF8C00, #FF1493);
         background-size: 200% 200%;
-        animation: gradientAnimation 20s infinite;
+        animation: gradientAnimation 5s infinite;
         overflow: hidden;
     }
 
@@ -332,29 +330,61 @@
             <h2 class="mt-4">Get the most from your learning experience</h2>
 
             <div class="mt-5 d-flex gap-3">
-                <button type="button" class="btn btn-primary active toggle-button" data-target="#exampleContent1">
-                    First
+                <button type="button" class="btn btn-warning active toggle-button" data-target="#exampleContent1">
+                    Learn Through Play 🎮📚
                 </button>
-                <button type="button" class="btn btn-outline-primary toggle-button" data-target="#exampleContent2">
-                    Second
+                <button type="button" class="btn btn-outline-warning toggle-button" data-target="#exampleContent2">
+                    Watch & Read 📺📖
                 </button>
-                <button type="button" class="btn btn-outline-primary toggle-button" data-target="#exampleContent3">
-                    Third
+                <button type="button" class="btn btn-outline-warning toggle-button" data-target="#exampleContent3">
+                    Track & Improve 📊🚀
                 </button>
             </div>
 
             <!-- Slide-in/out content container -->
             <div class="position-relative overflow-hidden mt-4" style="height: 150px;">
+                <!-- Panel 1 -->
                 <div id="exampleContent1" class="content-panel show slide-in-right">
-                    <p class="text-muted">This is the first content section. It's displayed by default.</p>
+                    <div class="row h-100">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <p class="text-muted">Interactive games make learning fun and engaging. Master English
+                                through
+                                storytelling, quizzes, and challenges designed to build reading and writing skills
+                                naturally.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('images/slide1.png') }}" alt="Interactive Games" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
+                <!-- Panel 2 -->
                 <div id="exampleContent2" class="content-panel">
-                    <p class="text-muted">This is the second content section. It appears when the second button is
-                        clicked.</p>
+                    <div class="row h-100">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <p class="text-muted">Access video lessons and reading materials that complement the games.
+                                Learn
+                                pronunciation, sentence structure, and comprehension with visual and audio support.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('images/slide2.png') }}" alt="Video Lessons" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
+                <!-- Panel 3 -->
                 <div id="exampleContent3" class="content-panel">
-                    <p class="text-muted">This is the third content section. It appears when the third button is
-                        clicked.</p>
+                    <div class="row h-100">
+                        <div class="col-md-6 d-flex align-items-center">
+                            <p class="text-muted">See your strengths and get recommendations to improve your English
+                                skills step
+                                by step.
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <img src="{{ asset('images/slide3.png') }}" alt="Track & Improve" class="img-fluid">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -369,8 +399,8 @@
         const panels = document.querySelectorAll('.content-panel');
 
         // The first button is active by default
-        buttons[0].classList.add('active', 'btn-primary');
-        buttons[0].classList.remove('btn-outline-primary');
+        buttons[0].classList.add('active', 'btn-warning');
+        buttons[0].classList.remove('btn-outline-warning');
         // Show the first panel by default
         panels[0].classList.add('show', 'slide-in-right');
 
@@ -379,13 +409,13 @@
             button.addEventListener('click', () => {
                 // Deactivate all buttons
                 buttons.forEach((b) => {
-                    b.classList.remove('active', 'btn-primary');
-                    b.classList.add('btn-outline-primary');
+                    b.classList.remove('active', 'btn-warning');
+                    b.classList.add('btn-outline-warning');
                 });
 
                 // Activate the clicked button
-                button.classList.add('active', 'btn-primary');
-                button.classList.remove('btn-outline-primary');
+                button.classList.add('active', 'btn-warning');
+                button.classList.remove('btn-outline-warning');
 
                 // Hide the currently visible panel
                 panels[currentIndex].classList.remove('show', 'slide-in-right',
