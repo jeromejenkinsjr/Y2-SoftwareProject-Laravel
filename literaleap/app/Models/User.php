@@ -79,4 +79,10 @@ public function checkLevelUp()
         return $this->belongsTo(Icon::class);
     }
     
+    public function teams() {
+    return $this->belongsToMany(Team::class, 'team_user')
+                ->withPivot('role', 'status', 'invited_by')
+                ->withTimestamps();
+}
+
 }
