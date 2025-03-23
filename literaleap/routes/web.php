@@ -7,6 +7,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\TeamController;
+use App\Http\Controllers\SearchController;
 
 use App\Models\Post;
 
@@ -73,6 +74,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/teams/{team}/manage', [TeamController::class, 'manage'])->name('teams.manage');
 });
 
+Route::get('/search', [SearchController::class, 'search'])->name('search');
+
+Route::get('/shop/item/{id}', [ShopController::class, 'show'])->name('shop.item.show');
 
 Route::get('/test-gd', function () {
     dd(extension_loaded('gd'));

@@ -34,6 +34,11 @@
                     <a class="nav-link {{ request()->routeIs('teams.index') ? 'active' : '' }}"
                         href="{{ route('teams.index') }}">{{ __('Teams') }}</a>
                 </li>
+                <form action="{{ route('search') }}" method="GET" class="d-flex ms-auto" role="search">
+                    <input class="form-control me-2" type="search" name="query" placeholder="Search site..."
+                        aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </form>
             </ul>
 
             <!-- User Dropdown with Profile Picture -->

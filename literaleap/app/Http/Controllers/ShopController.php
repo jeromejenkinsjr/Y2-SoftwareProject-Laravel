@@ -40,4 +40,10 @@ class ShopController extends Controller
 
         return redirect()->back()->with('success', 'Item purchased successfully!');
     }
+
+    public function show($id)
+    {
+        $item = ShopItem::findOrFail($id);
+        return view('shop.show', compact('item'));
+    }
 }
