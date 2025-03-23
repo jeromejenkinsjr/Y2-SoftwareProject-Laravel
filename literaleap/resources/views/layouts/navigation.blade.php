@@ -30,6 +30,10 @@
                     <a class="nav-link {{ request()->routeIs('forum.index') ? 'active' : '' }}"
                         href="{{ route('forum.index') }}">{{ __('Forums') }}</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('teams.index') ? 'active' : '' }}"
+                        href="{{ route('teams.index') }}">{{ __('Teams') }}</a>
+                </li>
             </ul>
 
             <!-- User Dropdown with Profile Picture -->

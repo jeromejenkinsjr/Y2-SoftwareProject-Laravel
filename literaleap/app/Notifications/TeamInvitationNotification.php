@@ -3,52 +3,44 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\Team;
+use App\Models\User;
 
 class TeamInvitationNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    public $team;
+    public $inviter;
+
+    public function __construct(Team $team, User $inviter)
     {
-        //
+        $this->team = $team;
+        $this->inviter = $inviter;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
-        return ['mail'];
+        return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
+    public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->line("You've been invited by {$this->inviter->name} to join {$this->team->name}.")
+                    ->action('Join Team', url('/teams'))
                     ->line('Thank you for using our application!');
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
+    public function toArray($notifiable)
     {
         return [
-            //
+            'team_id' => $this->team->id,
+            'team_name' => $this->team->name,
+            'inviter_name' => $this->inviter->name,
+            'message' => "You've been invited by {$this->inviter->name} to join {$this->team->name}."
         ];
     }
 }

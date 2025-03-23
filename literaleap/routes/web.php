@@ -6,6 +6,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\Auth\GoogleController;
+use App\Http\Controllers\TeamController;
 
 use App\Models\Post;
 
@@ -61,6 +62,16 @@ Route::get('/termsprivacy', function () {
 })->name('termsprivacy');
 
 Route::post('/profile/update-icon', [ProfileController::class, 'updateIcon'])->name('profile.updateIcon');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
+    Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
+    Route::post('/teams/invite/{team}', [TeamController::class, 'invite'])->name('teams.invite');
+    Route::post('/teams/join', [TeamController::class, 'joinByCode'])->name('teams.join');
+    Route::post('/teams/invitation/{pivotId}', [TeamController::class, 'respondInvitation'])->name('teams.respondInvitation');
+    Route::get('/teams/{team}/manage', [TeamController::class, 'manage'])->name('teams.manage');
+});
 
 
 Route::get('/test-gd', function () {
