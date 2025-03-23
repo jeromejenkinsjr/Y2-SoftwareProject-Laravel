@@ -57,9 +57,10 @@ class TeamController extends Controller
     public function invite(Request $request, Team $team)
     {
         // Only allow team admins/creator to send invites.
-        if (!auth()->user()->teams()->wherePivot('role', 'admin')->where('team_id', $team->id)->exists()) {
-            abort(403, 'Unauthorized');
-        }
+        if (!(in_array(auth()->user()->role, ['teacher', 'admin']) &&
+        auth()->user()->teams()->wherePivot('status', 'accepted')->where('team_id', $team->id)->exists())) {
+        abort(403, 'Unauthorized');
+    }
 
         $request->validate([
             'user_id' => 'required|exists:users,id'
