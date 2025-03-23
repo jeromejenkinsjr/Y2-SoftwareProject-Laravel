@@ -81,7 +81,7 @@ public function checkLevelUp()
     
     public function teams() {
     return $this->belongsToMany(Team::class, 'team_user')
-                ->withPivot('role', 'status', 'invited_by')
+                ->withPivot('id', 'role', 'status', 'invited_by')
                 ->withTimestamps();
 }
 

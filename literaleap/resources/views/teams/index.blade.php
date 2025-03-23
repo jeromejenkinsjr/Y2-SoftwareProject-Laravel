@@ -30,38 +30,39 @@
         @endif
     </div>
 
-    {{-- Pending Invitations (For Students) --}}
-    @if(Auth::user()->role == 'student')
-    <div class="mb-4">
-        <h3>Team Invitations</h3>
-        @if($invitations->count())
-        @foreach($invitations as $invitation)
-        <div class="alert alert-info d-flex justify-content-between align-items-center">
-            <div>
-                You've been invited by
-                <strong>{{ $invitation->pivot->invited_by ? $invitation->inviter->name : 'N/A' }}</strong>
-                to join <strong>{{ $invitation->name }}</strong>.
-            </div>
-            <div>
-                <form method="POST" action="{{ route('teams.respondInvitation', $invitation->pivot->id) }}"
-                    class="d-inline">
-                    @csrf
-                    <input type="hidden" name="response" value="accepted">
-                    <button type="submit" class="btn btn-sm btn-success">Accept</button>
-                </form>
-                <form method="POST" action="{{ route('teams.respondInvitation', $invitation->pivot->id) }}"
-                    class="d-inline">
-                    @csrf
-                    <input type="hidden" name="response" value="declined">
-                    <button type="submit" class="btn btn-sm btn-danger">Decline</button>
-                </form>
-            </div>
+    @if($invitations->count())
+    @foreach($invitations as $invitation)
+    <div class="alert alert-info d-flex justify-content-between align-items-center">
+        <div>
+            You've been invited by <strong>
+                @if($invitation->pivot->invited_by)
+                @php
+                $inviter = \App\Models\User::find($invitation->pivot->invited_by);
+                @endphp
+                {{ $inviter ? $inviter->name : 'N/A' }}
+                @else
+                N/A
+                @endif
+            </strong> to join <strong>{{ $invitation->name }}</strong>.
         </div>
-        @endforeach
-        @else
-        <p class="text-muted">No pending invitations.</p>
-        @endif
+        <div>
+            <form method="POST" action="{{ route('teams.respondInvitation', $invitation->pivot->id) }}"
+                class="d-inline">
+                @csrf
+                <input type="hidden" name="response" value="accepted">
+                <button type="submit" class="btn btn-sm btn-success">Accept</button>
+            </form>
+            <form method="POST" action="{{ route('teams.respondInvitation', $invitation->pivot->id) }}"
+                class="d-inline">
+                @csrf
+                <input type="hidden" name="response" value="declined">
+                <button type="submit" class="btn btn-sm btn-danger">Decline</button>
+            </form>
+        </div>
     </div>
+    @endforeach
+    @else
+    <p class="text-muted">No pending invitations.</p>
     @endif
 
     {{-- Join a Team by Code --}}
