@@ -8,6 +8,7 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\SubscribeController;
 
 use App\Models\Post;
 
@@ -80,6 +81,17 @@ Route::get('/shop/item/{id}', [ShopController::class, 'show'])->name('shop.item.
 
 Route::get('/test-gd', function () {
     dd(extension_loaded('gd'));
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/subscribe', function () {
+        return view('subscribe');
+    })->name('subscribe');
+
+    Route::post('/subscribe/checkout', [SubscribeController::class, 'checkout'])->name('subscribe.checkout');
+
+    Route::get('/subscribe/success', [SubscribeController::class, 'success'])->name('subscribe.success');
+    Route::get('/subscribe/cancel', [SubscribeController::class, 'cancel'])->name('subscribe.cancel');
 });
 
 require __DIR__.'/auth.php';
