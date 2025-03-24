@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\TeamController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscribeController;
-
+use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Models\Post;
 
 Route::get('/', function () {
@@ -94,4 +94,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/subscribe/cancel', [SubscribeController::class, 'cancel'])->name('subscribe.cancel');
 });
 
+Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
+->name('stripe.webhook');
 require __DIR__.'/auth.php';

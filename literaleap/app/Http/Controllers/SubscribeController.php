@@ -22,7 +22,7 @@ class SubscribeController extends Controller
             : config('services.stripe.price_student');
 
         return $user->newSubscription('default', $priceId)
-            ->trialDays(0) // Change to 14 if you want a trial
+            ->trialDays(14) // Change to 14 if you want a trial
             ->checkout([
                 'success_url' => route('subscribe.success'),
                 'cancel_url' => route('subscribe.cancel'),

@@ -24,6 +24,12 @@
 
 <body>
     <div class="container py-5">
+        @if (auth()->user()->onTrial('default'))
+        <div class="alert alert-info">
+            Your free trial ends on {{ auth()->user()->subscription('default')->trial_ends_at->format('F j, Y') }}.
+        </div>
+        @endif
+
         @php
         // Define XP thresholds for levels (adjust as needed)
         $thresholds = [0, 10, 25, 50, 100, 200, 500, 1000];

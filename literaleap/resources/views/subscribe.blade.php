@@ -20,6 +20,10 @@
                     <h4 class="card-title">Teacher Premium</h4>
                     <p class="card-text">Empower young minds with structured curriculum tools, analytics, and tailored
                         lesson plans.</p>
+                    <p class="card-text">
+                        Start with a <strong>14-day free trial</strong>. Cancel anytime before you're charged.
+                    </p>
+
                     <h5 class="card-subtitle mb-3 text-muted">€10.99 / month</h5>
 
                     <form action="{{ route('subscribe.checkout') }}" method="POST">
@@ -38,6 +42,10 @@
                     <h4 class="card-title">Student Premium</h4>
                     <p class="card-text">Unlock full access to interactive lessons, games, and offline materials to
                         boost your literacy journey.</p>
+                    <p class="card-text">
+                        Start with a <strong>14-day free trial</strong>. Cancel anytime before you're charged.
+                    </p>
+
                     <h5 class="card-subtitle mb-3 text-muted">€4.99 / month</h5>
 
                     <form action="{{ route('subscribe.checkout') }}" method="POST">
