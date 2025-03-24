@@ -44,6 +44,11 @@
             <!-- User Dropdown with Profile Picture -->
             @auth
             <ul class="navbar-nav ms-auto">
+                <a href="{{ route('subscribe') }}">
+                    <button class="btn button-gradient-border">
+                        Subscribe
+                    </button>
+                </a>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown"
                         role="button" data-bs-toggle="dropdown" aria-expanded="false">

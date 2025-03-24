@@ -1,0 +1,43 @@
+@property --border-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes border-angle-rotate {
+    from {
+        --border-angle: 0deg;
+    }
+    to {
+        --border-angle: 360deg;
+    }
+}
+
+.button-gradient-border {
+    --border-angle: 0deg;
+    animation: border-angle-rotate 60s linear infinite;
+    border: 0.1rem solid transparent;
+    border-radius: 12px;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(white, white) padding-box,
+        conic-gradient(
+                from var(--border-angle),
+                #fca714,
+                #ff8c00,
+                #ff1493,
+                #fca714
+            )
+            border-box;
+    position: relative;
+    color: black;
+    font-weight: 600;
+    transition: transform 0.2s ease-in-out;
+}
+
+.button-gradient-border:hover {
+    transform: scale(1.005);
+    padding: 0.5rem 1.2rem;
+    color: white;
+    background: linear-gradient(#fca714, #ff1493);
+    border: 0.1rem;
+}
