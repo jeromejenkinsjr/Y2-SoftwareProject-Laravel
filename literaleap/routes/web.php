@@ -52,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/forum/{post}/reply', [ForumController::class, 'reply'])->name('forum.reply');
         Route::post('/forum/{post}/like', [ForumController::class, 'like'])->name('forum.like');
     Route::post('/forum/{post}/dislike', [ForumController::class, 'dislike'])->name('forum.dislike');
+    Route::delete('/forum/{post}', [ForumController::class, 'destroy'])->name('forum.destroy');
+
 });
 Route::middleware('guest')->group(function () {
 Route::get('auth/google', [GoogleController::class, 'redirectToGoogle'])

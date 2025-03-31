@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Post;
 use App\Models\Reply;
+use App\Models\PostUserReaction;
 
 class ForumController extends Controller
 {
@@ -58,46 +59,79 @@ class ForumController extends Controller
     }
 
     public function like(Request $request, Post $post)
-    {
-        $action = $request->input('action');
+{
+    $user = auth()->user();
+    $reaction = PostUserReaction::where('post_id', $post->id)
+                    ->where('user_id', $user->id)
+                    ->first();
 
-        if ($action == 'like') {
-            $post->likes_count += 1;
-        } elseif ($action == 'unlike') {
-            $post->likes_count = max($post->likes_count - 1, 0);
-        } elseif ($action == 'switch_to_like') {
-            $post->likes_count += 1;
-            $post->dislikes_count = max($post->dislikes_count - 1, 0);
-        }
-
-        $post->save();
-
-        return response()->json([
-            'success' => true,
-            'likes_count' => $post->likes_count,
-            'dislikes_count' => $post->dislikes_count,
+    if ($reaction && $reaction->reaction === 'like') {
+        // Remove like
+        $reaction->delete();
+        $post->decrement('likes_count');
+    } elseif ($reaction && $reaction->reaction === 'dislike') {
+        // Switch from dislike to like
+        $reaction->update(['reaction' => 'like']);
+        $post->increment('likes_count');
+        $post->decrement('dislikes_count');
+    } else {
+        // Add new like
+        PostUserReaction::create([
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'reaction' => 'like',
         ]);
+        $post->increment('likes_count');
     }
 
-    public function dislike(Request $request, Post $post)
-    {
-        $action = $request->input('action');
+    return response()->json([
+        'success' => true,
+        'likes_count' => $post->likes_count, 
+        'dislikes_count' => $post->dislikes_count,
+    ]);
+}
 
-        if ($action == 'dislike') {
-            $post->dislikes_count += 1;
-        } elseif ($action == 'undislike') {
-            $post->dislikes_count = max($post->dislikes_count - 1, 0);
-        } elseif ($action == 'switch_to_dislike') {
-            $post->dislikes_count += 1;
-            $post->likes_count = max($post->likes_count - 1, 0);
-        }
+public function dislike(Request $request, Post $post)
+{
+    $user = auth()->user();
+    $reaction = PostUserReaction::where('post_id', $post->id)
+                    ->where('user_id', $user->id)
+                    ->first();
 
-        $post->save();
-
-        return response()->json([
-            'success' => true,
-            'likes_count' => $post->likes_count,
-            'dislikes_count' => $post->dislikes_count,
+    if ($reaction && $reaction->reaction === 'dislike') {
+        // Remove dislike
+        $reaction->delete();
+        $post->decrement('dislikes_count');
+    } elseif ($reaction && $reaction->reaction === 'like') {
+        // Switch from like to dislike
+        $reaction->update(['reaction' => 'dislike']);
+        $post->increment('dislikes_count');
+        $post->decrement('likes_count');
+    } else {
+        // Add new dislike
+        PostUserReaction::create([
+            'post_id' => $post->id,
+            'user_id' => $user->id,
+            'reaction' => 'dislike',
         ]);
+        $post->increment('dislikes_count');
     }
+
+    return response()->json([
+        'success' => true,
+        'likes_count' => $post->likes_count,
+        'dislikes_count' => $post->dislikes_count,
+    ]);
+}
+    public function destroy(Post $post)
+{
+    if (auth()->user()->id !== $post->user_id && auth()->user()->role !== 'admin') {
+        abort(403);
+    }
+
+    $post->delete();
+
+    return redirect()->route('forum.index')->with('success', 'Post deleted successfully.');
+}
+
 }

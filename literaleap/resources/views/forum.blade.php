@@ -11,6 +11,10 @@
     @endif
 
     @foreach($posts as $post)
+    @php
+    // Assuming $post->reactions is eager loaded or you can use a helper method.
+    $userReaction = $post->reactions->firstWhere('user_id', auth()->id());
+    @endphp
     <div class="card mb-3" id="post-{{ $post->id }}">
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
@@ -18,18 +22,55 @@
             <div class="d-flex align-items-center">
                 <!-- Like Button -->
                 <button class="btn btn-link p-0 me-3" onclick="handleLike({{ $post->id }})">
-                    <i id="like-icon-{{ $post->id }}" class="bi bi-hand-thumbs-up"
-                        style="font-size: 1.5rem; color: black;"></i>
+                    <i id="like-icon-{{ $post->id }}"
+                        class="bi {{ $userReaction && $userReaction->reaction === 'like' ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' }}"
+                        style="font-size: 1.5rem; color: {{ $userReaction && $userReaction->reaction === 'like' ? 'green' : 'black' }};"></i>
                     <span id="like-count-{{ $post->id }}">{{ $post->likes_count }}</span>
                 </button>
 
                 <!-- Dislike Button -->
                 <button class="btn btn-link p-0" onclick="handleDislike({{ $post->id }})">
-                    <i id="dislike-icon-{{ $post->id }}" class="bi bi-hand-thumbs-down"
-                        style="font-size: 1.5rem; color: black;"></i>
+                    <i id="dislike-icon-{{ $post->id }}"
+                        class="bi {{ $userReaction && $userReaction->reaction === 'dislike' ? 'bi-hand-thumbs-down-fill' : 'bi-hand-thumbs-down' }}"
+                        style="font-size: 1.5rem; color: {{ $userReaction && $userReaction->reaction === 'dislike' ? 'red' : 'black' }};"></i>
                     <span id="dislike-count-{{ $post->id }}">{{ $post->dislikes_count }}</span>
                 </button>
+
             </div>
+            @if(auth()->user()->id === $post->user_id || auth()->user()->role === 'admin')
+            <!-- Delete Button -->
+            <button type="button" class="btn btn-danger btn-sm ms-auto" data-bs-toggle="modal"
+                data-bs-target="#deleteModal-{{ $post->id }}">
+                Delete
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="deleteModal-{{ $post->id }}" tabindex="-1"
+                aria-labelledby="deleteModalLabel-{{ $post->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header bg-danger text-white">
+                            <h5 class="modal-title" id="deleteModalLabel-{{ $post->id }}">Confirm Delete</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure you want to delete the post titled "<strong>{{ $post->title }}</strong>"? This
+                            action cannot be undone.
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ route('forum.destroy', $post->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-danger">Yes, Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
         </div>
         <div class="card-footer">
             <h6>Replies:</h6>
@@ -59,84 +100,48 @@ function getCsrfToken() {
     return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 }
 
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
 function handleLike(postId) {
     let likeIcon = document.getElementById('like-icon-' + postId);
     let dislikeIcon = document.getElementById('dislike-icon-' + postId);
     let likeCount = document.getElementById('like-count-' + postId);
     let dislikeCount = document.getElementById('dislike-count-' + postId);
 
-    // If already liked, then remove like
-    if (likeIcon.classList.contains('bi-hand-thumbs-up-fill')) {
-        fetch('/forum/' + postId + '/like', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
-                },
-                body: JSON.stringify({
-                    action: 'unlike'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    likeIcon.classList.remove('bi-hand-thumbs-up-fill');
-                    likeIcon.classList.add('bi-hand-thumbs-up');
-                    likeIcon.style.color = 'black';
-                    likeCount.innerText = data.likes_count;
-                }
-            });
-        return;
-    }
-
-    // If currently disliked, switch from dislike to like
-    if (dislikeIcon.classList.contains('bi-hand-thumbs-down-fill')) {
-        fetch('/forum/' + postId + '/like', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
-                },
-                body: JSON.stringify({
-                    action: 'switch_to_like'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Update dislike to default
-                    dislikeIcon.classList.remove('bi-hand-thumbs-down-fill');
-                    dislikeIcon.classList.add('bi-hand-thumbs-down');
-                    dislikeIcon.style.color = 'black';
-                    // Update like to filled and green
-                    likeIcon.classList.remove('bi-hand-thumbs-up');
-                    likeIcon.classList.add('bi-hand-thumbs-up-fill');
-                    likeIcon.style.color = 'green';
-                    likeCount.innerText = data.likes_count;
-                    dislikeCount.innerText = data.dislikes_count;
-                }
-            });
-        return;
-    }
-
-    // Otherwise, add a like
     fetch('/forum/' + postId + '/like', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': getCsrfToken()
             },
-            body: JSON.stringify({
-                action: 'like'
-            })
+            body: JSON.stringify({}) // no extra parameter needed
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                likeIcon.classList.remove('bi-hand-thumbs-up');
-                likeIcon.classList.add('bi-hand-thumbs-up-fill');
-                likeIcon.style.color = 'green';
+                // Toggle like icon state
+                if (likeIcon.classList.contains('bi-hand-thumbs-up-fill')) {
+                    // If it was filled, then un-like it.
+                    likeIcon.classList.remove('bi-hand-thumbs-up-fill');
+                    likeIcon.classList.add('bi-hand-thumbs-up');
+                    likeIcon.style.color = 'black';
+                } else {
+                    // Fill the like icon
+                    likeIcon.classList.remove('bi-hand-thumbs-up');
+                    likeIcon.classList.add('bi-hand-thumbs-up-fill');
+                    likeIcon.style.color = 'green';
+                }
+                // Only reset the dislike icon if it was previously filled.
+                if (dislikeIcon.classList.contains('bi-hand-thumbs-down-fill')) {
+                    dislikeIcon.classList.remove('bi-hand-thumbs-down-fill');
+                    dislikeIcon.classList.add('bi-hand-thumbs-down');
+                    dislikeIcon.style.color = 'black';
+                }
+                // Update counts from server response
                 likeCount.innerText = data.likes_count;
+                dislikeCount.innerText = data.dislikes_count;
             }
         });
 }
@@ -147,75 +152,37 @@ function handleDislike(postId) {
     let dislikeCount = document.getElementById('dislike-count-' + postId);
     let likeCount = document.getElementById('like-count-' + postId);
 
-    // If already disliked, then remove dislike
-    if (dislikeIcon.classList.contains('bi-hand-thumbs-down-fill')) {
-        fetch('/forum/' + postId + '/dislike', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
-                },
-                body: JSON.stringify({
-                    action: 'undislike'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    dislikeIcon.classList.remove('bi-hand-thumbs-down-fill');
-                    dislikeIcon.classList.add('bi-hand-thumbs-down');
-                    dislikeIcon.style.color = 'black';
-                    dislikeCount.innerText = data.dislikes_count;
-                }
-            });
-        return;
-    }
-
-    // If currently liked, switch from like to dislike
-    if (likeIcon.classList.contains('bi-hand-thumbs-up-fill')) {
-        fetch('/forum/' + postId + '/dislike', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': getCsrfToken()
-                },
-                body: JSON.stringify({
-                    action: 'switch_to_dislike'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    likeIcon.classList.remove('bi-hand-thumbs-up-fill');
-                    likeIcon.classList.add('bi-hand-thumbs-up');
-                    likeIcon.style.color = 'black';
-                    dislikeIcon.classList.remove('bi-hand-thumbs-down');
-                    dislikeIcon.classList.add('bi-hand-thumbs-down-fill');
-                    dislikeIcon.style.color = 'red';
-                    likeCount.innerText = data.likes_count;
-                    dislikeCount.innerText = data.dislikes_count;
-                }
-            });
-        return;
-    }
-
-    // Otherwise, add a dislike
     fetch('/forum/' + postId + '/dislike', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': getCsrfToken()
             },
-            body: JSON.stringify({
-                action: 'dislike'
-            })
+            body: JSON.stringify({}) // no extra parameter needed
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                dislikeIcon.classList.remove('bi-hand-thumbs-down');
-                dislikeIcon.classList.add('bi-hand-thumbs-down-fill');
-                dislikeIcon.style.color = 'red';
+                // Toggle dislike icon state
+                if (dislikeIcon.classList.contains('bi-hand-thumbs-down-fill')) {
+                    // If it was filled, then un-dislike it.
+                    dislikeIcon.classList.remove('bi-hand-thumbs-down-fill');
+                    dislikeIcon.classList.add('bi-hand-thumbs-down');
+                    dislikeIcon.style.color = 'black';
+                } else {
+                    // Fill the dislike icon
+                    dislikeIcon.classList.remove('bi-hand-thumbs-down');
+                    dislikeIcon.classList.add('bi-hand-thumbs-down-fill');
+                    dislikeIcon.style.color = 'red';
+                }
+                // Only reset the like icon if it was previously filled.
+                if (likeIcon.classList.contains('bi-hand-thumbs-up-fill')) {
+                    likeIcon.classList.remove('bi-hand-thumbs-up-fill');
+                    likeIcon.classList.add('bi-hand-thumbs-up');
+                    likeIcon.style.color = 'black';
+                }
+                // Update counts from server response
+                likeCount.innerText = data.likes_count;
                 dislikeCount.innerText = data.dislikes_count;
             }
         });

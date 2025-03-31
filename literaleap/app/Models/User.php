@@ -87,4 +87,9 @@ public function checkLevelUp()
                 ->withTimestamps();
 }
 
+public function postReactions()
+{
+    return $this->hasMany(PostUserReaction::class);
+}
+
 }
