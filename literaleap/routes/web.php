@@ -11,6 +11,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SubscribeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Models\Post;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -96,4 +97,9 @@ Route::middleware(['auth'])->group(function () {
 
 Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
 ->name('stripe.webhook');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
 require __DIR__.'/auth.php';

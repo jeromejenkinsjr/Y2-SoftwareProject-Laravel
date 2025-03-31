@@ -39,7 +39,7 @@
         justify-content: center;
         text-align: center;
         color: white;
-        background: linear-gradient(45deg, #FCA714, #FF8C00, #FF1493);
+        background: linear-gradient(45deg, #1edfaa, #20d39c, #00c0f0, #00b0ff);
         background-size: 200% 200%;
         animation: gradientAnimation 5s infinite;
         overflow: hidden;
@@ -307,7 +307,9 @@
             <div class="collapse navbar-collapse" id="secondNavbar">
                 <ul class="navbar-nav gap-5">
                     <li class="nav-item ">
-                        <a class="nav-link" href="#">How it works</a>
+                        <a class="nav-link"
+                            href="http://localhost:8000/#:~:text=FAQ-,HOW%20IT%20WORKS,-Get%20the%20most">How it
+                            works</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">What’s new</a>

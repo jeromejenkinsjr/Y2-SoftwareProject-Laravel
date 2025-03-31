@@ -15,18 +15,12 @@
 
 .button-gradient-border {
     --border-angle: 0deg;
-    animation: border-angle-rotate 60s linear infinite;
+    animation: border-angle-rotate 10s linear infinite;
     border: 0.1rem solid transparent;
     border-radius: 12px;
     padding: 0.5rem 1.2rem;
     background: linear-gradient(white, white) padding-box,
-        conic-gradient(
-                from var(--border-angle),
-                #fca714,
-                #ff8c00,
-                #ff1493,
-                #fca714
-            )
+        conic-gradient(from var(--border-angle), #32e29d, #3ad7c6, #2ec4f3)
             border-box;
     position: relative;
     color: black;
@@ -35,9 +29,24 @@
 }
 
 .button-gradient-border:hover {
-    transform: scale(1.005);
-    padding: 0.5rem 1.2rem;
+    transform: scale(1.01);
     color: white;
-    background: linear-gradient(#fca714, #ff1493);
-    border: 0.1rem;
+    background: linear-gradient(#32e29d, #2ec4f3);
+    border: 0.1rem solid white;
+}
+
+.game-card {
+    transition: transform 0.3s ease;
+}
+
+.game-card:hover .thumbnail-img {
+    transform: scale(1.05);
+}
+
+.game-card:hover .game-title {
+    text-decoration: underline;
+}
+
+.thumbnail-img {
+    transition: transform 0.3s ease;
 }
