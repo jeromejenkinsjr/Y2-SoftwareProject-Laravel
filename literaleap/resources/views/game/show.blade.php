@@ -38,7 +38,14 @@
             <div class="d-flex justify-content-between">
                 <div>
                     <strong>{{ $review->user->name }}</strong>
-                    <span class="ms-2">Rating: {{ $review->rating }}/5</span>
+                    <span class="ms-2">
+                        @for($i = 1; $i <= 5; $i++) @if($review->rating >= $i)
+                            <i class="bi bi-star-fill text-warning"></i>
+                            @else
+                            <i class="bi bi-star text-warning"></i>
+                            @endif
+                            @endfor
+                    </span>
                 </div>
                 @if($review->user_id === auth()->id())
                 <div>
@@ -61,17 +68,23 @@
         <p>No reviews yet.</p>
         @endif
 
+
         <!-- If the user hasn't reviewed the game, show the review submission form -->
         @if(!$game->reviews->where('user_id', auth()->id())->count())
         <form method="POST" action="{{ route('reviews.store', $game->id) }}">
             @csrf
             <div class="mb-3">
-                <label for="rating" class="form-label">Your Rating (1-5)</label>
-                <select name="rating" id="rating" class="form-select w-auto">
-                    @for($i = 1; $i <= 5; $i++) <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                </select>
+                <label class="form-label">Your Rating</label>
+                <div id="star-rating" style="cursor: pointer;">
+                    <i class="bi bi-star" data-value="1"></i>
+                    <i class="bi bi-star" data-value="2"></i>
+                    <i class="bi bi-star" data-value="3"></i>
+                    <i class="bi bi-star" data-value="4"></i>
+                    <i class="bi bi-star" data-value="5"></i>
+                </div>
+                <input type="hidden" name="rating" id="rating" value="0">
             </div>
+
             <div class="mb-3">
                 <label for="review" class="form-label">Your Review</label>
                 <textarea name="review" id="review" class="form-control" rows="3" required></textarea>
@@ -87,4 +100,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
 <script src="{{ asset($game->file) }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('#star-rating i');
+    const ratingInput = document.getElementById('rating');
+    const currentRating = parseInt(ratingInput.value);
+    if (currentRating > 0) {
+        stars.forEach(star => {
+            if (parseInt(star.getAttribute('data-value')) <= currentRating) {
+                star.classList.remove('bi-star');
+                star.classList.add('bi-star-fill');
+            } else {
+                star.classList.remove('bi-star-fill');
+                star.classList.add('bi-star');
+            }
+        });
+    }
+
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.getAttribute('data-value');
+            ratingInput.value = rating;
+            stars.forEach(s => {
+                if (parseInt(s.getAttribute('data-value')) <= rating) {
+                    s.classList.remove('bi-star');
+                    s.classList.add('bi-star-fill');
+                } else {
+                    s.classList.remove('bi-star-fill');
+                    s.classList.add('bi-star');
+                }
+            });
+        });
+    });
+});
+</script>
 @endsection
