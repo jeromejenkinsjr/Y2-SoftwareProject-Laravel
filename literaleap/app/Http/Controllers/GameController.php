@@ -27,8 +27,9 @@ class GameController extends Controller
 {
     $search = $request->input('search');
     $categoryId = $request->input('category');
+    $sortBy = $request->input('sort_by');
 
-    $gamesQuery = Game::with('categories');
+    $gamesQuery = Game::with('categories')->withAvg('reviews', 'rating');
 
     if ($search && !$categoryId) {
         $gamesQuery->where(function ($query) use ($search) {
@@ -39,6 +40,12 @@ class GameController extends Controller
         $gamesQuery->whereHas('categories', function ($query) use ($categoryId) {
             $query->where('categories.id', $categoryId);
         });
+    }
+
+    if ($sortBy === 'average') {
+        $gamesQuery->orderBy('reviews_avg_rating', 'desc');
+    } elseif ($sortBy === 'newest') {
+        $gamesQuery->orderBy('created_at', 'desc');
     }
 
     $games = $gamesQuery->get();

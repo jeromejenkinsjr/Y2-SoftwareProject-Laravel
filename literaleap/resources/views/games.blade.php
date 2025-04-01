@@ -26,6 +26,21 @@
                 <noscript><button type="submit" class="btn btn-secondary w-100">Filter</button></noscript>
             </form>
         </div>
+
+        <!-- Sort By Form -->
+        <div class="col-md-6">
+            <form method="GET" action="{{ route('games.index') }}">
+                <select name="sort_by" class="form-select mb-2" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="average" {{ request('sort_by') == 'average' ? 'selected' : '' }}>Average Rating
+                    </option>
+                    <option value="newest" {{ request('sort_by') == 'newest' ? 'selected' : '' }}>Newest</option>
+                </select>
+                <noscript>
+                    <button type="submit" class="btn btn-secondary w-100">Sort</button>
+                </noscript>
+            </form>
+        </div>
     </div>
 </div>
 
@@ -47,6 +62,18 @@
                         <span class="badge bg-secondary">{{ $category->name }}</span>
                         @endforeach
                     </div>
+                    @if(isset($game->reviews_avg_rating))
+                    <div>
+                        @for($i = 1; $i <= 5; $i++) @if($game->reviews_avg_rating >= $i)
+                            <i class="bi bi-star-fill text-warning"></i>
+                            @else
+                            <i class="bi bi-star text-warning"></i>
+                            @endif
+                            @endfor
+                            <span>({{ number_format($game->reviews_avg_rating, 1) }})</span>
+                    </div>
+                    @endif
+
                 </div>
             </div>
         </div>
