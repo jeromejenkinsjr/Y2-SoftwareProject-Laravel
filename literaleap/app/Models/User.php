@@ -92,4 +92,9 @@ public function postReactions()
     return $this->hasMany(PostUserReaction::class);
 }
 
+public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
 }

@@ -12,4 +12,10 @@ class Game extends Model
     {
         return $this->belongsToMany(Category::class, 'category_game');
     }
+
+    public function reviews()
+{
+    return $this->hasMany(Review::class);
+}
+
 }

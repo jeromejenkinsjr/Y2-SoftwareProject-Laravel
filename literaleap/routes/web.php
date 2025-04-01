@@ -12,6 +12,7 @@ use App\Http\Controllers\SubscribeController;
 use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Models\Post;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReviewController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -107,5 +108,13 @@ Route::post('/stripe/webhook', [WebhookController::class, 'handleWebhook'])
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::post('/games/{game}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+    Route::get('/games/{game}/reviews/{review}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+    Route::put('/games/{game}/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
+    Route::delete('/games/{game}/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+});
+
 
 require __DIR__.'/auth.php';
