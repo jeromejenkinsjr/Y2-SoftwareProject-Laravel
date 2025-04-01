@@ -31,8 +31,11 @@ class TeamController extends Controller
     // Create a team with a unique team code and attach the creator as an admin.
     public function store(Request $request)
     {
+        // dd($request->all());
+
         $request->validate([
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         // Generate a unique team code (6-character alphanumeric)
@@ -46,7 +49,11 @@ class TeamController extends Controller
             'team_code'  => $teamCode,
             'created_by' => auth()->id(),
         ]);
-
+        
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+        }
         // Attach the creator as an admin with accepted status.
         auth()->user()->teams()->attach($team->id, ['role' => 'admin', 'status' => 'accepted']);
 
@@ -143,4 +150,80 @@ class TeamController extends Controller
         }
         return view('teams.manage', compact('team'));
     }
+
+    public function destroy(Team $team)
+{
+    // Only allow deletion if the user is the creator or an admin of the team
+    if (
+        auth()->id() !== $team->created_by &&
+        !auth()->user()->teams()->where('team_id', $team->id)->wherePivot('role', 'admin')->exists()
+    ) {
+        abort(403, 'Unauthorized');
+    }
+
+    // Detach users first (optional but good practice)
+    $team->users()->detach();
+
+    // Delete team record
+    $team->delete();
+
+    return redirect()->route('teams.index')->with('success', 'Team deleted successfully.');
+}
+
+public function update(Request $request, Team $team)
+{
+    if (
+        auth()->id() !== $team->created_by &&
+        !auth()->user()->teams()->where('team_id', $team->id)->wherePivot('role', 'admin')->exists()
+    ) {
+        abort(403, 'Unauthorized');
+    }
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    ]);
+
+    $data = ['name' => $request->name];
+
+    if ($request->hasFile('image')) {
+        $imageName = time() . '.' . $request->image->extension();
+        $request->image->move(public_path('images'), $imageName);
+        $data['image'] = $imageName;
+    }
+
+    $team->update($data);
+
+    return redirect()->route('teams.manage', $team->id)->with('success', 'Team updated successfully.');
+}
+
+public function removeMember(Team $team, User $user)
+{
+    $currentUser = auth()->user();
+
+    if (
+        !$currentUser->teams()
+            ->where('team_id', $team->id)
+            ->wherePivot('role', 'admin')
+            ->wherePivot('status', 'accepted')
+            ->exists()
+    ) {
+        abort(403, 'Unauthorized');
+    }
+
+    $target = $team->users()->where('user_id', $user->id)->first();
+
+    if (!$target) {
+        return redirect()->back()->with('error', 'User is not part of this team.');
+    }
+
+    if ($target->pivot->role === 'admin') {
+        return redirect()->back()->with('error', 'You cannot remove another admin.');
+    }
+
+    $team->users()->detach($user->id);
+
+    return redirect()->back()->with('success', 'Member removed successfully.');
+}
+
 }

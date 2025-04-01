@@ -10,11 +10,15 @@
         You are not authorized to create a team.
     </div>
     @else
-    <form method="POST" action="{{ route('teams.store') }}">
+    <form method="POST" action="{{ route('teams.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Team Name</label>
             <input type="text" class="form-control" id="name" name="name" placeholder="Enter team name" required>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Team Image</label>
+            <input type="file" class="form-control" id="image" name="image">
         </div>
         <button type="submit" class="btn btn-primary">Create Team</button>
     </form>

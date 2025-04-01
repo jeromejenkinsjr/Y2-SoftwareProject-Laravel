@@ -18,11 +18,31 @@
         <ul class="list-group">
             @foreach($myTeams as $team)
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span>{{ $team->name }} (Code: {{ $team->team_code }})</span>
+                <div class="d-flex align-items-center">
+                    {{-- Team Image --}}
+                    @if($team->image)
+                    <img src="{{ asset('images/' . $team->image) }}" alt="Team Image"
+                        style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; margin-right: 15px;">
+                    @else
+                    <div
+                        style="width: 50px; height: 50px; background-color: #e0e0e0; border-radius: 8px; margin-right: 15px; display: flex; align-items: center; justify-content: center;">
+                        <span class="text-muted" style="font-size: 12px;">No Image</span>
+                    </div>
+                    @endif
+
+                    {{-- Team Info --}}
+                    <div>
+                        <strong>{{ $team->name }}</strong><br>
+                        <small class="text-muted">Code: {{ $team->team_code }}</small>
+                    </div>
+                </div>
+
+                {{-- Manage Button --}}
                 @if(Auth::id() == $team->created_by)
                 <a href="{{ route('teams.manage', $team->id) }}" class="btn btn-sm btn-outline-secondary">Manage</a>
                 @endif
             </li>
+
             @endforeach
         </ul>
         @else

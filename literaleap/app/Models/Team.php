@@ -9,7 +9,7 @@ class Team extends Model
 {
 use HasFactory;
 
-protected $fillable = ['name', 'team_code', 'created_by'];
+protected $fillable = ['name', 'team_code', 'created_by', 'image'];
 
 // The teacher/admin who created the team.
 public function creator()

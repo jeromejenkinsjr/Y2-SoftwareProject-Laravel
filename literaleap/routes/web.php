@@ -76,6 +76,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/teams/join', [TeamController::class, 'joinByCode'])->name('teams.join');
     Route::post('/teams/invitation/{pivotId}', [TeamController::class, 'respondInvitation'])->name('teams.respondInvitation');
     Route::get('/teams/{team}/manage', [TeamController::class, 'manage'])->name('teams.manage');
+    Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
+    Route::delete('/teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
+    Route::put('/teams/{team}', [TeamController::class, 'update'])->name('teams.update');
+    Route::delete('/teams/{team}/members/{user}', [TeamController::class, 'removeMember'])->name('teams.removeMember');
 });
 
 Route::get('/search', [SearchController::class, 'search'])->name('search');
