@@ -19,6 +19,12 @@
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">{{ $post->body }}</p>
+            @if($post->image)
+            <div class="mb-3">
+                <img src="{{ asset('storage/' . $post->image) }}" alt="Post image" class="img-fluid"
+                    style="max-height: 300px; object-fit: contain;">
+            </div>
+            @endif
             <div class="d-flex align-items-center">
                 <!-- Like Button -->
                 <button class="btn btn-link p-0 me-3" onclick="handleLike({{ $post->id }})">
