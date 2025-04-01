@@ -47,16 +47,20 @@
                             @endfor
                     </span>
                 </div>
-                @if($review->user_id === auth()->id())
+                @if($review->user_id === auth()->id() || auth()->user()->role === 'admin')
                 <div>
+                    @if($review->user_id === auth()->id())
                     <a href="{{ route('reviews.edit', [$game->id, $review->id]) }}"
                         class="btn btn-sm btn-outline-primary">Edit</a>
+                    @endif
                     <form action="{{ route('reviews.destroy', [$game->id, $review->id]) }}" method="POST"
                         class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button class="btn btn-sm btn-outline-danger"
-                            onclick="return confirm('Are you sure you want to delete this review?')">Delete</button>
+                            onclick="return confirm('Are you sure you want to delete this review?')">
+                            Delete
+                        </button>
                     </form>
                 </div>
                 @endif
@@ -67,6 +71,7 @@
         @else
         <p>No reviews yet.</p>
         @endif
+
 
 
         <!-- If the user hasn't reviewed the game, show the review submission form -->
