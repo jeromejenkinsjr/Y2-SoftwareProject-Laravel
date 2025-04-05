@@ -22,6 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ShopItemsTableSeeder::class);
         $this->call(ForumSeeder::class,);
         $this->call(IconSeeder::class,);
-        $this->call(GamesAndCategories::class,);
+        $this->call(GamesAndCategoriesSeeder::class);
     }
 }

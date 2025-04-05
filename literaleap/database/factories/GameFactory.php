@@ -9,8 +9,12 @@ class GameFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->word(),
-            'genre' => $this->faker->randomElement(['Adventure', 'Puzzle', 'Educational']),
+            'title' => $this->faker->sentence(3),
+            'description' => $this->faker->paragraph(3),
+            'file' => $this->faker->word() . '.js',
+            'thumbnail' => $this->faker->image('public/images', 640, 480, null, false),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
-};
+}
