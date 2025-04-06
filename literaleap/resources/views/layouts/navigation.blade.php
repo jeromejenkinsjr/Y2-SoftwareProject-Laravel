@@ -76,8 +76,10 @@
                         {{ Auth::user()->name }}
 
                         <!-- Selected Icon (20x20) beside the user's name -->
+                        @if($selectedIcon && !empty(Auth::user()->profile_icon))
                         <img src="{{ $profileIconUrl }}" alt="Profile Icon" class="rounded-circle ms-2"
                             style="width: 20px; height: 20px; object-fit: cover;">
+                        @endif
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
