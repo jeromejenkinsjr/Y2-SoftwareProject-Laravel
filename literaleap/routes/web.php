@@ -116,5 +116,16 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/games/{game}/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
+Route::get('/premium-assets/coin_clicker.js', function () {
+    if (!Auth::check() || !Auth::user()->premium) {
+        abort(403, 'Unauthorized access to premium asset.');
+    }
+
+    $path = resource_path('premium-js/coin_clicker.js');
+
+    return response()->file($path, [
+        'Content-Type' => 'application/javascript'
+    ]);
+})->name('premium.coinclicker.js');
 
 require __DIR__.'/auth.php';

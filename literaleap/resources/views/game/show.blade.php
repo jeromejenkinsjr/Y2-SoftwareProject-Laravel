@@ -104,7 +104,24 @@
 <!-- Load p5.js from a CDN -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+@if($game->title === 'Coin Clicker')
+@if(Auth::check() && Auth::user()->premium)
+<script src="{{ route('premium.coinclicker.js') }}"></script>
+@else
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('game-container').innerHTML = `
+                    <div class="alert alert-warning text-center">
+                        This game is available to <strong>premium</strong> users only.<br>
+                        <a href='{{ route('subscribe') }}' class="btn btn-warning mt-2">Subscribe Now</a>
+                    </div>`;
+});
+</script>
+@endif
+@else
 <script src="{{ asset($game->file) }}"></script>
+@endif
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const stars = document.querySelectorAll('#star-rating i');

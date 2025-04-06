@@ -56,6 +56,10 @@ class GameController extends Controller
 
     public function show(Game $game)
     {
+        if ($game->title === 'Coin Clicker' && (!Auth::check() || !Auth::user()->premium)) {
+            return redirect()->route('games.index')->with('error', 'You must be a premium member to access this game. <a href="' . route('subscribe') . '">Subscribe here</a>.');
+        }
+    
         return view('game.show', compact('game'));
     }
 }

@@ -16,9 +16,9 @@ class GamesAndCategoriesSeeder extends Seeder
 
         // Create a game.
         $game = Game::create([
-            'title'       => 'My First Game',
-            'description' => 'This is a sample game. Enjoy the action!',
-            'file'        => 'js/game.js', // path relative to the public folder
+            'title'       => 'Coin Clicker',
+            'description' => 'This is a premium coin clicker game. Enjoy the premium experience!',
+            'file'        => 'premium-assets/coin_clicker.js', // path relative to the public folder
             'thumbnail'   => 'images/game-thumbnail.jpg' // path relative to the public folder
         ]);
 
