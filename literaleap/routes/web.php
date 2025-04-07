@@ -13,9 +13,15 @@ use Laravel\Cashier\Http\Controllers\WebhookController;
 use App\Models\Post;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReviewController;
+use App\Models\Game;
+use App\Models\ShopItem;
 
 Route::get('/', function () {
-    return view('welcome');
+    $newestGame = Game::latest()->first();
+    $featuredGame = Game::find(3);
+    $featuredShopItem = ShopItem::inRandomOrder()->first();
+
+    return view('welcome', compact('newestGame', 'featuredGame', 'featuredShopItem'));
 });
 
 Route::get('/dashboard', function () {

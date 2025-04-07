@@ -325,13 +325,13 @@
         </div>
     </nav>
 
-    <section>
+    <section style="background-color: #ffffff; padding-top: 60px; padding-bottom: 60px;">
         <div class="container">
             <!-- Headings -->
-            <h6 class="mt-5 mb-3 text-uppercase fw-bold" style="letter-spacing: 1.25px;">How it Works</h6>
-            <h2 class="mt-4">Get the most from your learning experience</h2>
+            <h6 class="mb-3 text-uppercase fw-bold text-center" style="letter-spacing: 1.25px;">How it Works</h6>
+            <h2 class="text-center mb-3">Get the most from your learning experience</h2>
 
-            <div class="mt-5 d-flex gap-3">
+            <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
                 <button type="button" class="btn btn-warning active toggle-button" data-target="#exampleContent1">
                     Learn Through Play 🎮📚
                 </button>
@@ -344,7 +344,7 @@
             </div>
 
             <!-- Slide-in/out content container -->
-            <div class="position-relative overflow-hidden mt-4" style="height: 150px;">
+            <div class="position-relative overflow-hidden mt-5" style="height: 180px;">
                 <!-- Panel 1 -->
                 <div id="exampleContent1" class="content-panel show slide-in-right">
                     <div class="row h-100">
@@ -352,8 +352,7 @@
                             <p class="text-muted">Interactive games make learning fun and engaging. Master English
                                 through
                                 storytelling, quizzes, and challenges designed to build reading and writing skills
-                                naturally.
-                            </p>
+                                naturally.</p>
                         </div>
                         <div class="col-md-6">
                             <img src="{{ asset('images/slide1.png') }}" alt="Interactive Games" class="img-fluid">
@@ -366,8 +365,7 @@
                         <div class="col-md-6 d-flex align-items-center">
                             <p class="text-muted">Access video lessons and reading materials that complement the games.
                                 Learn
-                                pronunciation, sentence structure, and comprehension with visual and audio support.
-                            </p>
+                                pronunciation, sentence structure, and comprehension with visual and audio support.</p>
                         </div>
                         <div class="col-md-6">
                             <img src="{{ asset('images/slide2.png') }}" alt="Video Lessons" class="img-fluid">
@@ -379,18 +377,153 @@
                     <div class="row h-100">
                         <div class="col-md-6 d-flex align-items-center">
                             <p class="text-muted">See your strengths and get recommendations to improve your English
-                                skills step
-                                by step.
-                            </p>
+                                skills step by step.</p>
                         </div>
                         <div class="col-md-6">
                             <img src="{{ asset('images/slide3.png') }}" alt="Track & Improve" class="img-fluid">
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
+
+    <section class="py-5" style="background-color: #f9f9f9;">
+        <div class="container">
+            <h6 class="text-center mb-3 text-uppercase fw-bold" style="letter-spacing: 1.25px;">Plans and Pricing</h6>
+            <h2 class="text-center text-dark">Discover More</h2>
+            <p class="text-center text-dark mb-5">Explore the world of interactive learning with LiteraLeap.</p>
+
+            <div class="row justify-content-center">
+                <!-- Teacher Premium Plan -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Teacher Premium</h4>
+                            <p class="card-text">Empower young minds with structured curriculum tools, analytics, and
+                                tailored lesson plans.</p>
+                            <p class="card-text">Start with a <strong>14-day free trial</strong>. Cancel anytime before
+                                you're charged.</p>
+                            <h5 class="card-subtitle mb-3 text-muted">€10.99 / month</h5>
+
+                            @auth
+                            <form action="{{ route('subscribe.checkout') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="plan" value="teacher">
+                                <button type="submit" class="btn btn-primary btn-block w-100">Subscribe as
+                                    Teacher</button>
+                            </form>
+                            @else
+                            <a href="{{ route('login') }}" class="btn btn-primary btn-block w-100">Login to
+                                Subscribe</a>
+                            @endauth
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Student Premium Plan -->
+                <div class="col-md-5">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Student Premium</h4>
+                            <p class="card-text">Unlock full access to interactive lessons, games, and offline materials
+                                to boost your literacy journey.</p>
+                            <p class="card-text">Start with a <strong>14-day free trial</strong>. Cancel anytime before
+                                you're charged.</p>
+                            <h5 class="card-subtitle mb-3 text-muted">€4.99 / month</h5>
+
+                            @auth
+                            <form action="{{ route('subscribe.checkout') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="plan" value="student">
+                                <button type="submit" class="btn btn-success btn-block w-100">Subscribe as
+                                    Student</button>
+                            </form>
+                            @else
+                            <a href="{{ route('login') }}" class="btn btn-success btn-block w-100">Login to
+                                Subscribe</a>
+                            @endauth
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" style="background-color: #ffffff;">
+        <div class="container">
+            <h6 class="text-center mb-3 text-uppercase fw-bold" style="letter-spacing: 1.25px;">What’s New?</h6>
+
+            <div class="row g-4">
+                <!-- Left: Newest Game (full card + description) -->
+                <div class="col-md-6">
+                    <div class="h-100 shadow-sm border-0 position-relative overflow-hidden game-card rounded">
+                        <div class="position-relative overflow-hidden rounded">
+                            <img src="{{ asset($newestGame->thumbnail) }}"
+                                class="card-img-top object-fit-cover thumbnail-img"
+                                style="height: 350px; object-fit: cover;" alt="{{ $newestGame->title }}">
+
+                            <div class="position-absolute bottom-0 w-100 px-3 py-2"
+                                style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 50%, transparent 100%);">
+                                <h1 class="text-white m-0 fw-bold">{{ $newestGame->title }}</h1>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mt-3">
+                        <p class="text-muted">{{ $newestGame->description }}</p>
+                    </div>
+                </div>
+
+                <!-- Right: Featured Game & Shop Item -->
+                <div class="col-md-6">
+                    <div class="bg-light rounded shadow-sm p-3 h-100 d-flex flex-column justify-content-between">
+
+                        <!-- Featured Game -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-2">Featured Game</h5>
+                            @php
+                            $featuredGame = \App\Models\Game::find(3);
+                            @endphp
+                            @if($featuredGame)
+                            <div class="rounded overflow-hidden">
+                                <img src="{{ asset($featuredGame->thumbnail) }}" class="img-fluid w-100"
+                                    style="height: 200px; object-fit: cover;" alt="{{ $featuredGame->title }}">
+                            </div>
+                            @else
+                            <p class="text-muted">No featured game found.</p>
+                            @endif
+                        </div>
+
+                        <!-- Featured Shop Item -->
+                        <div>
+                            <h5 class="fw-bold mb-2">Featured Shop Item</h5>
+                            @php
+                            $featuredShopItem = \App\Models\ShopItem::inRandomOrder()->first();
+                            @endphp
+                            @if($featuredShopItem)
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="{{ asset($featuredShopItem->image) }}" alt="{{ $featuredShopItem->name }}"
+                                    class="rounded" style="width: 80px; height: 80px; object-fit: cover;">
+                                <div>
+                                    <h6 class="mb-1 fw-semibold">{{ $featuredShopItem->name }}</h6>
+                                    <p class="text-muted small mb-0">
+                                        {{ Str::limit($featuredShopItem->description, 80) }}</p>
+                                </div>
+                            </div>
+                            @else
+                            <p class="text-muted">No shop item available.</p>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

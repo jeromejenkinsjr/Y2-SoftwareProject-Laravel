@@ -50,3 +50,7 @@
 .thumbnail-img {
     transition: transform 0.3s ease;
 }
+
+body {
+    background-color: #f8f9fa;
+}
