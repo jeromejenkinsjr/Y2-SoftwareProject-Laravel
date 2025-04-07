@@ -524,6 +524,142 @@
         </div>
     </section>
 
+    <section class="py-5 bg-#f9f9f9">
+        <div class="container">
+            <h6 class="text-center mb-3 text-uppercase fw-bold" style="letter-spacing: 1.25px;">FAQ</h6>
+            <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+
+            <div class="accordion accordion-flush" id="faqAccordion">
+                <!-- Question 1 -->
+                <div class="accordion-item border-bottom">
+                    <h2 class="accordion-header" id="faqHeadingOne">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faqCollapseOne" aria-expanded="false" aria-controls="faqCollapseOne">
+                            What is LiteraLeap?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseOne" class="accordion-collapse collapse" aria-labelledby="faqHeadingOne"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            LiteraLeap is an educational platform designed to improve literacy among young learners
+                            using games, videos, and personalised tools. It's fun, intuitive, and built for all learning
+                            levels.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="accordion-item border-bottom">
+                    <h2 class="accordion-header" id="faqHeadingTwo">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faqCollapseTwo" aria-expanded="false" aria-controls="faqCollapseTwo">
+                            Who is LiteraLeap for?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseTwo" class="accordion-collapse collapse" aria-labelledby="faqHeadingTwo"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            LiteraLeap is ideal for students, teachers, and guardians. Whether you're learning English
+                            or teaching it, our platform offers tools and content tailored to your role.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="accordion-item border-bottom">
+                    <h2 class="accordion-header" id="faqHeadingThree">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faqCollapseThree" aria-expanded="false" aria-controls="faqCollapseThree">
+                            Is there a free trial available?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseThree" class="accordion-collapse collapse" aria-labelledby="faqHeadingThree"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Yes! All users can enjoy a 14-day free trial of our Premium features. No credit card is
+                            required to get started.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="accordion-item border-bottom">
+                    <h2 class="accordion-header" id="faqHeadingFour">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faqCollapseFour" aria-expanded="false" aria-controls="faqCollapseFour">
+                            What does Premium include?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseFour" class="accordion-collapse collapse" aria-labelledby="faqHeadingFour"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Premium unlocks all games, offline resources, progress tracking, custom lessons (for
+                            teachers), and exclusive study content. It’s the best way to maximise your LiteraLeap
+                            experience.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="accordion-item border-bottom">
+                    <h2 class="accordion-header" id="faqHeadingFive">
+                        <button class="accordion-button collapsed fw-semibold" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#faqCollapseFive" aria-expanded="false" aria-controls="faqCollapseFive">
+                            Can I use LiteraLeap on mobile devices?
+                        </button>
+                    </h2>
+                    <div id="faqCollapseFive" class="accordion-collapse collapse" aria-labelledby="faqHeadingFive"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Absolutely! LiteraLeap is fully responsive and works great on phones, tablets, and desktops
+                            — no app required.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row justify-content-between align-items-start">
+                <!-- Left: Brand + Tagline -->
+                <div class="col-md-4 mb-4">
+                    <h5 class="fw-bold">LiteraLeap®</h5>
+                    <p class="small text-light mt-2">Giving every child the power to read, write, and dream beyond the
+                        limits of their world.</p>
+                </div>
+
+                <!-- Center: Newsletter -->
+                <div class="col-md-5 mb-4">
+                    <p class="small text-light">Follow our projects and updates by subscribing to our newsletter and
+                        getting all the educational scoop directly to your inbox</p>
+                    <form class="d-flex mt-3">
+                        <input type="email" class="form-control me-2" placeholder="Your E-Mail" required>
+                        <button class="btn btn-warning fw-semibold px-4" type="submit">Subscribe</button>
+                    </form>
+                </div>
+
+                <!-- Right: Social Icons -->
+                <div class="col-md-2 mb-4 text-md-end">
+                    <p class="small text-light mb-2">Follow Us</p>
+                    <div class="d-flex gap-3 justify-content-md-end">
+                        <a href="#" class="text-white fs-5"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="text-white fs-5"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-light my-4">
+
+            <div class="text-center small text-secondary">
+                Copyright © 2025 LiteraLeap. Educational Platform by Jeremi Olczak, Dublin, Ireland. All Rights
+                Reserved.
+            </div>
+        </div>
+    </footer>
+
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
