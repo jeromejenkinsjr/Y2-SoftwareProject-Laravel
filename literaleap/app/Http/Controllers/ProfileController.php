@@ -73,7 +73,6 @@ class ProfileController extends Controller
             if ($user->shopItems()->where('shop_item_id', $shopItemId)->exists()) {
                 $shopItem = ShopItem::find($shopItemId);
                 if ($shopItem) {
-                    // Optionally, you might want to process or simply assign the image path.
                     $user->profile_picture = $shopItem->image;
                     $user->save();
                     return Redirect::route('profile.edit')->with('success', 'Profile picture updated successfully.');

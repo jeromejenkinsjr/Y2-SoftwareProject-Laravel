@@ -62,4 +62,17 @@ class GameController extends Controller
     
         return view('game.show', compact('game'));
     }
+
+    public function addXp(Request $request)
+{
+    $user = Auth::user();
+    $user->xp += 100;
+    $user->save();
+
+    return response()->json([
+        'message' => 'XP added successfully!',
+        'xp' => $user->xp
+    ]);
+}
+
 }

@@ -47,6 +47,7 @@ Route::post('/shop/buy-item/{item}', [ShopController::class, 'buyItem'])->name('
 
 Route::middleware(['auth'])->group(function () {
     Route::post('/add-credit', [GameController::class, 'addCredit']);
+    Route::post('/add-xp', [GameController::class, 'addXp'])->name('add-xp');
 });
 
 Route::get('/games', [GameController::class, 'index'])->name('games.index');
