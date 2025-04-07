@@ -105,16 +105,14 @@
     }
 
     .content-panel {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 100%;
+        display: none;
         opacity: 0;
-        transition: all 0.5s ease;
+        transition: opacity 0.5s ease;
     }
 
     /* When "show" is added, the panel becomes visible */
     .content-panel.show {
+        display: block;
         opacity: 1;
     }
 
@@ -169,8 +167,8 @@
                                 Plans and Pricing
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Basic Plan</a></li>
-                                <li><a class="dropdown-item" href="#">Premium Plan</a></li>
+                                <li><a class="dropdown-item" href="#">Student Premium</a></li>
+                                <li><a class="dropdown-item" href="#">Teacher Premium</a></li>
                             </ul>
                         </li>
 
@@ -180,8 +178,8 @@
                                 Resources
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Blog</a></li>
-                                <li><a class="dropdown-item" href="#">Help Center</a></li>
+                                <li><a class="dropdown-item" href="#">YouTube</a></li>
+                                <li><a class="dropdown-item" href="#">E-Books</a></li>
                             </ul>
                         </li>
 
@@ -344,10 +342,10 @@
             </div>
 
             <!-- Slide-in/out content container -->
-            <div class="position-relative overflow-hidden mt-5" style="height: 180px;">
+            <div class="position-relative overflow-hidden mt-5">
                 <!-- Panel 1 -->
                 <div id="exampleContent1" class="content-panel show slide-in-right">
-                    <div class="row h-100">
+                    <div class="row align-items-center">
                         <div class="col-md-6 d-flex align-items-center">
                             <p class="text-muted">Interactive games make learning fun and engaging. Master English
                                 through
@@ -355,32 +353,32 @@
                                 naturally.</p>
                         </div>
                         <div class="col-md-6">
-                            <img src="{{ asset('images/slide1.png') }}" alt="Interactive Games" class="img-fluid">
+                            <img src="{{ asset('images/slide1.jpg') }}" alt="Interactive Games" class="img-fluid">
                         </div>
                     </div>
                 </div>
                 <!-- Panel 2 -->
                 <div id="exampleContent2" class="content-panel">
-                    <div class="row h-100">
+                    <div class="row align-items-center">
                         <div class="col-md-6 d-flex align-items-center">
                             <p class="text-muted">Access video lessons and reading materials that complement the games.
                                 Learn
                                 pronunciation, sentence structure, and comprehension with visual and audio support.</p>
                         </div>
                         <div class="col-md-6">
-                            <img src="{{ asset('images/slide2.png') }}" alt="Video Lessons" class="img-fluid">
+                            <img src="{{ asset('images/slide2.jpg') }}" alt="Video Lessons" class="img-fluid">
                         </div>
                     </div>
                 </div>
                 <!-- Panel 3 -->
                 <div id="exampleContent3" class="content-panel">
-                    <div class="row h-100">
+                    <div class="row align-items-center">
                         <div class="col-md-6 d-flex align-items-center">
                             <p class="text-muted">See your strengths and get recommendations to improve your English
                                 skills step by step.</p>
                         </div>
                         <div class="col-md-6">
-                            <img src="{{ asset('images/slide3.png') }}" alt="Track & Improve" class="img-fluid">
+                            <img src="{{ asset('images/slide3.jpg') }}" alt="Track & Improve" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -453,17 +451,19 @@
 
     <section class="py-5" style="background-color: #ffffff;">
         <div class="container">
-            <h6 class="text-center mb-3 text-uppercase fw-bold" style="letter-spacing: 1.25px;">What’s New?</h6>
+            <h6 class="text-center mb-4  text-uppercase fw-bold" style="letter-spacing: 1.25px;">What’s New?</h6>
 
             <div class="row g-4">
                 <!-- Left: Newest Game (full card + description) -->
                 <div class="col-md-6">
-                    <div class="h-100 shadow-sm border-0 position-relative overflow-hidden game-card rounded">
-                        <div class="position-relative overflow-hidden rounded">
-                            <img src="{{ asset($newestGame->thumbnail) }}"
-                                class="card-img-top object-fit-cover thumbnail-img"
-                                style="height: 350px; object-fit: cover;" alt="{{ $newestGame->title }}">
+                    <div class="card shadow-sm border-0 overflow-hidden">
+                        <div class="position-relative">
+                            <!-- Ensure full image coverage -->
+                            <img src="{{ asset($newestGame->thumbnail) }}" class="w-100"
+                                style="height: 350px; object-fit: cover; display: block;"
+                                alt="{{ $newestGame->title }}">
 
+                            <!-- Overlay title -->
                             <div class="position-absolute bottom-0 w-100 px-3 py-2"
                                 style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 50%, transparent 100%);">
                                 <h1 class="text-white m-0 fw-bold">{{ $newestGame->title }}</h1>
@@ -471,11 +471,10 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
-                    <div class="mt-3">
-                        <p class="text-muted">{{ $newestGame->description }}</p>
-                    </div>
+                    <!-- Game Description below the card -->
+                    <p class="mt-3 mb-3 text-muted">{{ $newestGame->description }}</p>
                 </div>
+
 
                 <!-- Right: Featured Game & Shop Item -->
                 <div class="col-md-6">
